@@ -3,11 +3,14 @@ import { useParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { STARTING_PRICES } from '../../lib/gameInitialization';
+import { executeBuyTransaction, executeSellTransaction, executePassTransaction, advanceTransaction } from '../../lib/game/transactionService';
 import TopBar from './TopBar';
 import PortfolioPanel from './PortfolioPanel';
 import StockGrid from './StockGrid';
 import TransactionPanel from './TransactionPanel';
 import BottomSection from './BottomSection';
+import BuyModal from './BuyModal';
+import SellModal from './SellModal';
 
 interface GameBoardProps {
   gameId?: string;
@@ -34,10 +37,67 @@ const GameBoard: React.FC<GameBoardProps> = () => {
   const [playerData, setPlayerData] = useState<any>(null);
   const [currentPlayerName, setCurrentPlayerName] = useState<string>('Loading...');
 
+  // Modal states
+  const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
+  const [isSellModalOpen, setIsSellModalOpen] = useState(false);
+
+  // Transaction state
+  const [isProcessing, setIsProcessing] = useState(false);
+
   useEffect(() => {
     if (gameId) {
       fetchGameData();
     }
+  }, [gameId, user]);
+
+  // Real-time subscription for game state changes
+  useEffect(() => {
+    if (!gameId) return;
+
+    // Subscribe to game state updates
+    const gameChannel = supabase
+      .channel(`game-${gameId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'games',
+          filter: `game_id=eq.${gameId}`
+        },
+        (payload) => {
+          console.log('Game state updated:', payload);
+          setGameData(payload.new);
+        }
+      )
+      .subscribe();
+
+    // Subscribe to player updates
+    const playerChannel = supabase
+      .channel(`players-${gameId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'game_players',
+          filter: `game_id=eq.${gameId}`
+        },
+        (payload) => {
+          console.log('Player data updated:', payload);
+          // If this is the current player's update, refresh player data
+          if (payload.new.user_id === user?.id) {
+            setPlayerData(payload.new);
+          }
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscriptions on unmount
+    return () => {
+      supabase.removeChannel(gameChannel);
+      supabase.removeChannel(playerChannel);
+    };
   }, [gameId, user]);
 
   const fetchGameData = async () => {
@@ -77,6 +137,83 @@ const GameBoard: React.FC<GameBoardProps> = () => {
       console.error('Error fetching game data:', err);
       setError(err.message);
       setLoading(false);
+    }
+  };
+
+  // Transaction handlers
+  const handleBuyConfirm = async (stockSymbol: string, quantity: number) => {
+    if (!gameId || !playerData?.player_id || isProcessing) return;
+
+    setIsProcessing(true);
+    try {
+      const result = await executeBuyTransaction(
+        gameId,
+        playerData.player_id,
+        stockSymbol,
+        quantity
+      );
+
+      if (result.success) {
+        // Advance to next transaction
+        await advanceTransaction(gameId);
+        // Data will update via real-time subscription
+      } else {
+        alert(`Transaction failed: ${result.error}`);
+      }
+    } catch (error: any) {
+      console.error('Error executing buy:', error);
+      alert(`Error: ${error.message}`);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleSellConfirm = async (stockSymbol: string, quantity: number) => {
+    if (!gameId || !playerData?.player_id || isProcessing) return;
+
+    setIsProcessing(true);
+    try {
+      const result = await executeSellTransaction(
+        gameId,
+        playerData.player_id,
+        stockSymbol,
+        quantity
+      );
+
+      if (result.success) {
+        // Advance to next transaction
+        await advanceTransaction(gameId);
+        // Data will update via real-time subscription
+      } else {
+        alert(`Transaction failed: ${result.error}`);
+      }
+    } catch (error: any) {
+      console.error('Error executing sell:', error);
+      alert(`Error: ${error.message}`);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handlePass = async () => {
+    if (!gameId || !playerData?.player_id || isProcessing) return;
+
+    setIsProcessing(true);
+    try {
+      const result = await executePassTransaction();
+
+      if (result.success) {
+        // Advance to next transaction
+        await advanceTransaction(gameId);
+        // Data will update via real-time subscription
+      } else {
+        alert(`Transaction failed: ${result.error}`);
+      }
+    } catch (error: any) {
+      console.error('Error executing pass:', error);
+      alert(`Error: ${error.message}`);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -121,6 +258,26 @@ const GameBoard: React.FC<GameBoardProps> = () => {
 
   const cash = playerData.cash_balance || 0;
   const netWorth = cash + stockValue;
+
+  // Prepare stock data for buy modal
+  const stocksForBuy = Object.keys(COMPANY_INFO).map((symbol) => ({
+    symbol,
+    name: COMPANY_INFO[symbol].name,
+    price: stockPrices[symbol] || STARTING_PRICES[symbol as keyof typeof STARTING_PRICES],
+    availableShares: shareSupply[symbol] || 200000,
+    color: COMPANY_INFO[symbol].color
+  }));
+
+  // Prepare owned stocks for sell modal
+  const ownedStocks = Object.entries(stockHoldings)
+    .filter(([_, shares]) => (shares as number) > 0)
+    .map(([symbol, shares]) => ({
+      symbol,
+      name: COMPANY_INFO[symbol]?.name || symbol,
+      price: stockPrices[symbol] || STARTING_PRICES[symbol as keyof typeof STARTING_PRICES],
+      sharesOwned: shares as number,
+      color: COMPANY_INFO[symbol]?.color || 'gray'
+    }));
 
   // Prepare stock cards data
   const stocks = Object.keys(COMPANY_INFO).map((symbol) => {
@@ -187,7 +344,10 @@ const GameBoard: React.FC<GameBoardProps> = () => {
             <TransactionPanel
               isDirector={(playerData.director_of || []).length > 0}
               isChairman={(playerData.chairman_of || []).length > 0}
-              canAct={true}
+              canAct={!isProcessing}
+              onBuy={() => setIsBuyModalOpen(true)}
+              onSell={() => setIsSellModalOpen(true)}
+              onPass={handlePass}
             />
           </div>
         </div>
@@ -197,6 +357,22 @@ const GameBoard: React.FC<GameBoardProps> = () => {
       <BottomSection
         revealedCards={[]}
         recentTransactions={[]}
+      />
+
+      {/* Modals */}
+      <BuyModal
+        isOpen={isBuyModalOpen}
+        onClose={() => setIsBuyModalOpen(false)}
+        stocks={stocksForBuy}
+        playerCash={cash}
+        onConfirm={handleBuyConfirm}
+      />
+
+      <SellModal
+        isOpen={isSellModalOpen}
+        onClose={() => setIsSellModalOpen(false)}
+        ownedStocks={ownedStocks}
+        onConfirm={handleSellConfirm}
       />
     </div>
   );

@@ -4,12 +4,18 @@ interface TransactionPanelProps {
   isDirector: boolean;
   isChairman: boolean;
   canAct: boolean;
+  onBuy?: () => void;
+  onSell?: () => void;
+  onPass?: () => void;
 }
 
 const TransactionPanel: React.FC<TransactionPanelProps> = ({
   isDirector,
   isChairman,
-  canAct
+  canAct,
+  onBuy,
+  onSell,
+  onPass
 }) => {
   return (
     <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-4">
@@ -18,6 +24,7 @@ const TransactionPanel: React.FC<TransactionPanelProps> = ({
       {/* Main Actions */}
       <div className="space-y-3 mb-6">
         <button
+          onClick={onBuy}
           disabled={!canAct}
           className="w-full bg-green-600 hover:bg-green-700 disabled:bg-slate-600 disabled:cursor-not-allowed border border-green-500 hover:border-green-400 disabled:border-slate-500 rounded-lg py-3 px-4 font-bold text-white transition-all transform hover:scale-105 disabled:hover:scale-100"
         >
@@ -25,6 +32,7 @@ const TransactionPanel: React.FC<TransactionPanelProps> = ({
         </button>
 
         <button
+          onClick={onSell}
           disabled={!canAct}
           className="w-full bg-red-600 hover:bg-red-700 disabled:bg-slate-600 disabled:cursor-not-allowed border border-red-500 hover:border-red-400 disabled:border-slate-500 rounded-lg py-3 px-4 font-bold text-white transition-all transform hover:scale-105 disabled:hover:scale-100"
         >
@@ -32,6 +40,7 @@ const TransactionPanel: React.FC<TransactionPanelProps> = ({
         </button>
 
         <button
+          onClick={onPass}
           disabled={!canAct}
           className="w-full bg-slate-600 hover:bg-slate-700 disabled:bg-slate-700 disabled:cursor-not-allowed border border-slate-500 hover:border-slate-400 disabled:border-slate-600 rounded-lg py-3 px-4 font-bold text-white transition-all transform hover:scale-105 disabled:hover:scale-100"
         >
