@@ -30,10 +30,60 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Helper function to ensure user profile exists
+    const ensureProfile = async (user: User) => {
+      try {
+        // Check if profile exists
+        const { data: profile, error: checkError } = await supabase
+          .from('game_profiles')
+          .select('user_id')
+          .eq('user_id', user.id)
+          .single();
+
+        // Profile exists, we're good
+        if (profile) {
+          console.log('Profile exists for user:', user.id);
+          return;
+        }
+
+        // Profile doesn't exist, try to create it
+        if (checkError?.code === 'PGRST116') {
+          console.log('Profile missing, creating...');
+
+          const username =
+            user.user_metadata?.full_name ||
+            user.email?.split('@')[0] ||
+            `Player_${user.id.substring(0, 8)}`;
+
+          const { error: insertError } = await supabase.from('game_profiles').insert({
+            user_id: user.id,
+            username: username,
+            avatar_url: user.user_metadata?.avatar_url || ''
+          });
+
+          if (insertError) {
+            // Check if it's a duplicate key error (profile was created by trigger)
+            if (insertError.code === '23505') {
+              console.log('Profile was created by database trigger (race condition)');
+              return;
+            }
+            console.error('Error creating profile:', insertError);
+          } else {
+            console.log('Profile created successfully');
+          }
+        }
+      } catch (error) {
+        console.error('Error ensuring profile:', error);
+      }
+    };
+
     // Check active session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      if (session?.user) {
+        ensureProfile(session.user);
+      }
       setLoading(false);
     });
 
@@ -43,6 +93,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
+      if (session?.user) {
+        ensureProfile(session.user);
+      }
       setLoading(false);
     });
 

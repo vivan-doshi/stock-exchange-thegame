@@ -4,6 +4,10 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
 import HomePage from './pages/HomePage'
 import GamePage from './pages/GamePage'
+import GameLobby from './pages/GameLobby'
+import GameWaitingRoom from './pages/GameWaitingRoom'
+import DebugAuth from './pages/DebugAuth'
+import ProfileSetup from './pages/ProfileSetup'
 
 function App() {
   return (
@@ -11,6 +15,14 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route
+            path="/profile-setup"
+            element={
+              <ProtectedRoute>
+                <ProfileSetup />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/"
             element={
@@ -20,10 +32,34 @@ function App() {
             }
           />
           <Route
-            path="/game"
+            path="/lobby"
+            element={
+              <ProtectedRoute>
+                <GameLobby />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/lobby/:gameId"
+            element={
+              <ProtectedRoute>
+                <GameWaitingRoom />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/game/:gameId"
             element={
               <ProtectedRoute>
                 <GamePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/debug"
+            element={
+              <ProtectedRoute>
+                <DebugAuth />
               </ProtectedRoute>
             }
           />

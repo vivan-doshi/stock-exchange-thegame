@@ -54,6 +54,13 @@ export default function HomePage() {
                     {user?.email}
                   </p>
                 </div>
+                <Link
+                  to="/profile-setup"
+                  className="block w-full text-left px-4 py-2 text-sm text-blue-400 hover:bg-white/5 transition-colors"
+                  onClick={() => setShowMenu(false)}
+                >
+                  Edit Profile
+                </Link>
                 <button
                   onClick={handleSignOut}
                   className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-white/5 transition-colors"
@@ -109,7 +116,7 @@ export default function HomePage() {
                 Perfect for beginners and quick matches.
               </p>
               <Link
-                to="/game"
+                to="/lobby"
                 className="block w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg text-center transition-colors"
               >
                 Play Now
