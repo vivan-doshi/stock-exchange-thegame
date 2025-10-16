@@ -1,43 +1,75 @@
-# Stock Exchange Game
+# Stock Market Tycoon
 ## Complete Rules Guide with Doshi Rules
 
 ---
 
 ## Table of Contents
 1. [Game Overview](#game-overview)
-2. [Game Components](#game-components)
-3. [Setup](#setup)
-4. [Basic Rules](#basic-rules)
-5. [Special Cards](#special-cards)
-6. [Special Powers](#special-powers)
-7. [Doshi Rules Level 1: Shorting](#doshi-rules-level-1-shorting)
-8. [Doshi Rules Level 2: Options, Dividends & Buybacks](#doshi-rules-level-2-options-dividends--buybacks)
-9. [Strategies to Win](#strategies-to-win)
-10. [Common Mistakes](#common-mistakes)
-11. [FAQ](#faq)
-12. [Quick Reference](#quick-reference)
+2. [Game Modes](#game-modes)
+3. [Game Components](#game-components)
+4. [Setup](#setup)
+5. [Trader Mode: Basic Rules](#trader-mode-basic-rules)
+6. [Special Cards](#special-cards)
+7. [Special Powers](#special-powers)
+8. [Investor Mode: Shorting](#investor-mode-shorting)
+9. [Strategist Mode: Options, Dividends & Buybacks](#strategist-mode-options-dividends--buybacks)
+10. [Strategies to Win](#strategies-to-win)
+11. [Common Mistakes](#common-mistakes)
+12. [FAQ](#faq)
+13. [Quick Reference](#quick-reference)
 
 ---
 
 ## Game Overview
 
-Stock Exchange by Zephyr is a 2-6 player stock market simulation game where players act as investors buying and selling shares in 6 different companies over 10 rounds (market years). The player with the highest net worth (cash + stock value) at the end wins.
+Stock Market Tycoon is a 2-6 player stock market simulation game where players act as investors buying and selling shares in 6 different companies over 10 rounds (market years). The player with the highest net worth (cash + stock value) at the end wins.
 
 **Game Length:** 10 rounds (market years)  
 **Players:** 2-6  
 **Each Round:** Maximum 3 transactions (sub-rounds)  
-**Starting Capital:** Rs 6,00,000 per player
+**Starting Capital:** $600,000 per player
 
 ### The Six Companies
 
-| Stock | Starting Price | Maximum Shares | Volatility |
-|-------|---------------|----------------|------------|
-| Wockhardt | Rs 20 | 2,00,000 | Low (4 price cards) |
-| HDFC | Rs 25 | 2,00,000 | Medium-Low (6 price cards) |
-| TISCO | Rs 45 | 2,00,000 | Medium (6 price cards) |
-| ONGC | Rs 55 | 2,00,000 | Medium-High (8 price cards) |
-| Reliance | Rs 75 | 2,00,000 | High (10 price cards) |
-| Infosys | Rs 80 | 2,00,000 | Very High (12 price cards) |
+| Stock | Sector | Starting Price | Maximum Shares | Volatility |
+|-------|--------|---------------|----------------|------------|
+| Atlas Bank | Banking | $20 | 200,000 | Low (4 price cards) |
+| Titan Steel | Manufacturing | $25 | 200,000 | Medium-Low (6 price cards) |
+| Global Industries | Conglomerate | $45 | 200,000 | Medium (6 price cards) |
+| Omega Energy | Energy | $55 | 200,000 | Medium-High (8 price cards) |
+| VitalCare Pharma | Healthcare | $75 | 200,000 | High (10 price cards) |
+| NovaTech | Technology | $80 | 200,000 | Very High (12 price cards) |
+
+---
+
+## Game Modes
+
+Stock Market Tycoon features a progressive difficulty system with 5 levels. Master each mode to unlock the next level of complexity and strategy.
+
+### 🎯 Trader Mode (Level 1)
+**Available:** Start here  
+**Includes:** Core buying/selling mechanics, special cards, Director/Chairman powers  
+**Best for:** Learning the fundamentals of stock market gameplay
+
+### 📊 Investor Mode (Level 2)
+**Unlock:** Complete 3 games in Trader Mode  
+**Adds:** Shorting mechanics - bet against stocks for profit  
+**Best for:** Players who understand market basics and want advanced risk management
+
+### 👔 Strategist Mode (Level 3)
+**Unlock:** Win 2 games in Investor Mode  
+**Adds:** Options trading (calls & puts), Dividends, Stock buybacks  
+**Best for:** Advanced players seeking maximum strategic depth and corporate control
+
+### 🏆 Tycoon Mode (Level 4)
+**Status:** Coming Soon  
+**Description:** Ultimate challenge with additional advanced mechanics
+
+### 💎 Mogul Mode (Level 5)
+**Status:** Coming Soon  
+**Description:** Master-level gameplay for the ultimate stock market legend
+
+*Note: This guide covers Trader, Investor, and Strategist modes. Tycoon and Mogul modes will be added in future updates.*
 
 ---
 
@@ -57,12 +89,12 @@ Stock Exchange by Zephyr is a 2-6 player stock market simulation game where play
 
 | Stock | Card Values | Number of Cards |
 |-------|-------------|-----------------|
-| Wockhardt | -10, -5, +5, +10 | 4 |
-| HDFC | -15, -10, -5, +5, +10, +15 | 6 |
-| TISCO | -15, -10, -5, +5, +10, +15 | 6 |
-| ONGC | -20, -15, -10, -5, +5, +10, +15, +20 | 8 |
-| Reliance | -25, -20, -15, -10, -5, +5, +10, +15, +20, +25 | 10 |
-| Infosys | -30, -25, -20, -15, -10, -5, +5, +10, +15, +20, +25, +30 | 12 |
+| Atlas Bank | -10, -5, +5, +10 | 4 |
+| Titan Steel | -15, -10, -5, +5, +10, +15 | 6 |
+| Global Industries | -15, -10, -5, +5, +10, +15 | 6 |
+| Omega Energy | -20, -15, -10, -5, +5, +10, +15, +20 | 8 |
+| VitalCare Pharma | -25, -20, -15, -10, -5, +5, +10, +15, +20, +25 | 10 |
+| NovaTech | -30, -25, -20, -15, -10, -5, +5, +10, +15, +20, +25, +30 | 12 |
 
 **Special Cards:** (detailed in Special Cards section)
 
@@ -71,14 +103,14 @@ Stock Exchange by Zephyr is a 2-6 player stock market simulation game where play
 ## Setup
 
 1. **Choose Dealer**: Select a starting dealer (rotates each round)
-2. **Distribute Money**: Each player receives Rs 6,00,000
+2. **Distribute Money**: Each player receives $600,000
 3. **Set Starting Prices**: Mark all stocks at their starting prices on the share price chart
 4. **Prepare Cards**: Shuffle all 108 cards together
 5. **Share Blocks**: Place share blocks within reach of all players
 
 ---
 
-## Basic Rules
+## Trader Mode: Basic Rules
 
 ### Turn Structure
 
@@ -92,7 +124,7 @@ Each market year consists of up to 3 transaction rounds. Turn order rotates cloc
 ### Buying Shares
 
 **Minimum Purchase Rules:**
-- Minimum denomination: Rs 5,000
+- Minimum denomination: $5,000
 - Minimum shares: 1,000 shares
 - Must buy in multiples of 1,000 shares
 
@@ -100,10 +132,10 @@ Each market year consists of up to 3 transaction rounds. Turn order rotates cloc
 You can ONLY buy a stock if the price cards in your hand for that stock add up to ZERO or POSITIVE.
 
 **Example:**
-- You have 4 Infosys cards: -30, +20, +30, -5
-- Total: +15 (positive) ✓ You CAN buy Infosys
+- You have 4 NovaTech cards: -30, +20, +30, -5
+- Total: +15 (positive) ✓ You CAN buy NovaTech
 - If the cards were: -30, -20, +5, -5
-- Total: -50 (negative) ✗ You CANNOT buy Infosys
+- Total: -50 (negative) ✗ You CANNOT buy NovaTech
 
 **EXCEPTION:** If you are the FIRST buyer of that stock in that entire market year (regardless of transaction round), you can buy even with negative cards.
 
@@ -130,21 +162,21 @@ You can ONLY buy a stock if the price cards in your hand for that stock add up t
 (These take up one of your transaction turns)
 
 #### Loan Stocks Matured (2 cards)
-- Receive Rs 1,00,000 from the bank
+- Receive $100,000 from the bank
 - Must be used during a transaction round (cannot claim at end of round)
 - Uses one entire transaction
 
 #### Debenture (2 cards)
-- **Condition**: Stock must hit Rs 0 in the SAME round you received this card AND you must own shares
+- **Condition**: Stock must hit $0 in the SAME round you received this card AND you must own shares
 - **Effect**: Receive face value (original starting price) for ALL your shares of that stock
-- Example: TISCO crashes to Rs 0, you own 10,000 shares → receive Rs 4,50,000 (10,000 × Rs 45)
+- Example: Global Industries crashes to $0, you own 10,000 shares → receive $450,000 (10,000 × $45)
 - Must be used during a transaction round
 - Uses one entire transaction
 
 #### Rights Issued (2 cards)
-- Buy 1 share for every 2 shares you own at Rs 10 per share
+- Buy 1 share for every 2 shares you own at $10 per share
 - **Important**: When you use this, every player sitting AFTER you in that same transaction round can also exercise this right if they own shares in that company
-- Example: You're Player 1 of 4, you use Rights on HDFC in Transaction 2
+- Example: You're Player 1 of 4, you use Rights on Titan Steel in Transaction 2
   - Players 2, 3, 4 can exercise in Transaction 2 on their turns
   - If you're Player 4 (dealer), no one else benefits
 - Uses one transaction
@@ -210,9 +242,9 @@ You can ONLY buy a stock if the price cards in your hand for that stock add up t
 
 ---
 
-## Doshi Rules Level 1: Shorting
+## Investor Mode: Shorting
 
-**For experienced players only**
+**Available after completing 3 games in Trader Mode**
 
 ### What is Shorting?
 
@@ -232,9 +264,9 @@ Shorting allows you to profit when a stock price DECREASES. You're betting again
 - If stock price INCREASED: You pay the bank the difference per share
 
 **Example:**
-- You short 10,000 HDFC shares at Rs 60
-- **Scenario A** - Price drops to Rs 40: You receive Rs 2,00,000 from bank (Rs 20 × 10,000)
-- **Scenario B** - Price rises to Rs 80: You pay Rs 2,00,000 to bank (Rs 20 × 10,000)
+- You short 10,000 Titan Steel shares at $60
+- **Scenario A** - Price drops to $40: You receive $200,000 from bank ($20 × 10,000)
+- **Scenario B** - Price rises to $80: You pay $200,000 to bank ($20 × 10,000)
 
 **Inability to Pay:**
 - If you cannot pay your short debt, you have until the FIRST transaction of the next market year to settle
@@ -246,9 +278,11 @@ Shorting allows you to profit when a stock price DECREASES. You're betting again
 
 ---
 
-## Doshi Rules Level 2: Options, Dividends & Buybacks
+## Strategist Mode: Options, Dividends & Buybacks
 
-**For advanced players who have mastered shorting**
+**Available after winning 2 games in Investor Mode**
+
+Options, dividends, and buybacks represent the pinnacle of stock market strategy, giving players sophisticated tools for wealth building and corporate control.
 
 ### Options Trading
 
@@ -263,15 +297,15 @@ Options give you the RIGHT (but not obligation) to buy or sell shares at a prede
 - If price is lower, you don't exercise (only lose premium)
 
 **Example:**
-- Infosys is at Rs 80
-- You buy a call option for 5,000 shares at Rs 80 strike
-- Premium: Rs 40,000 (10% of Rs 4,00,000)
-- **Year-End Scenario A** - Infosys at Rs 120:
-  - Exercise! Buy at Rs 80, immediately worth Rs 120
-  - Profit: (Rs 120 - Rs 80) × 5,000 - Rs 40,000 = Rs 1,60,000
-- **Year-End Scenario B** - Infosys at Rs 60:
-  - Don't exercise (why buy at Rs 80 when market is Rs 60?)
-  - Loss: Rs 40,000 (premium only)
+- NovaTech is at $80
+- You buy a call option for 5,000 shares at $80 strike
+- Premium: $40,000 (10% of $400,000)
+- **Year-End Scenario A** - NovaTech at $120:
+  - Exercise! Buy at $80, immediately worth $120
+  - Profit: ($120 - $80) × 5,000 - $40,000 = $160,000
+- **Year-End Scenario B** - NovaTech at $60:
+  - Don't exercise (why buy at $80 when market is $60?)
+  - Loss: $40,000 (premium only)
 
 #### Put Options (Right to SELL)
 
@@ -282,15 +316,15 @@ Options give you the RIGHT (but not obligation) to buy or sell shares at a prede
 - If price is higher, you don't exercise (only lose premium)
 
 **Example:**
-- Reliance is at Rs 75
-- You buy a put option for 5,000 shares at Rs 75 strike
-- Premium: Rs 37,500 (10% of Rs 3,75,000)
-- **Year-End Scenario A** - Reliance at Rs 40:
-  - Exercise! Sell at Rs 75 when market is Rs 40
-  - Profit: (Rs 75 - Rs 40) × 5,000 - Rs 37,500 = Rs 1,37,500
-- **Year-End Scenario B** - Reliance at Rs 100:
-  - Don't exercise (why sell at Rs 75 when market is Rs 100?)
-  - Loss: Rs 37,500 (premium only)
+- VitalCare Pharma is at $75
+- You buy a put option for 5,000 shares at $75 strike
+- Premium: $37,500 (10% of $375,000)
+- **Year-End Scenario A** - VitalCare Pharma at $40:
+  - Exercise! Sell at $75 when market is $40
+  - Profit: ($75 - $40) × 5,000 - $37,500 = $137,500
+- **Year-End Scenario B** - VitalCare Pharma at $100:
+  - Don't exercise (why sell at $75 when market is $100?)
+  - Loss: $37,500 (premium only)
 
 #### Option Mechanics
 
@@ -308,8 +342,8 @@ Options give you the RIGHT (but not obligation) to buy or sell shares at a prede
 
 **Premium Calculation:**
 - Premium = Strike Price × Number of Shares × Premium Rate
-- Example: ONGC at Rs 55, call option for 10,000 shares at 12% premium
-  - Premium = Rs 55 × 10,000 × 12% = Rs 66,000
+- Example: Omega Energy at $55, call option for 10,000 shares at 12% premium
+  - Premium = $55 × 10,000 × 12% = $66,000
 
 **Buying Options:**
 - Uses one transaction turn
@@ -341,8 +375,8 @@ Dividends allow Directors and Chairmen to extract cash from the company and pay 
 
 #### Who Can Issue Dividends
 
-- **Director** (25-49.9% ownership): Up to Rs 10 per share
-- **Chairman** (50%+ ownership): Up to Rs 20 per share
+- **Director** (25-49.9% ownership): Up to $10 per share
+- **Chairman** (50%+ ownership): Up to $20 per share
 - Both can issue in the same round (cumulative effect)
 
 #### Dividend Mechanics
@@ -354,13 +388,13 @@ Dividends allow Directors and Chairmen to extract cash from the company and pay 
 - Stock price DROPS by dividend amount immediately
 
 **Example:**
-- You're Chairman of TISCO with 1,00,000 shares
-- TISCO trading at Rs 60
-- You declare Rs 15 dividend per share
+- You're Chairman of Global Industries with 100,000 shares
+- Global Industries trading at $60
+- You declare $15 dividend per share
 - **Effects:**
-  - You receive: Rs 15 × 1,00,000 = Rs 15,00,000
+  - You receive: $15 × 100,000 = $1,500,000
   - All other shareholders paid proportionally
-  - TISCO price drops to Rs 45 immediately
+  - Global Industries price drops to $45 immediately
   - Other players can use this cash in subsequent transactions this round
 
 **Strategic Uses:**
@@ -402,28 +436,28 @@ Buybacks allow Chairmen to repurchase shares from the market, reducing supply an
 5. Happens immediately within that same round
 
 **Example:**
-- Chairman announces: "Buying back 20,000 ONGC shares at Rs 60"
+- Chairman announces: "Buying back 20,000 Omega Energy shares at $60"
 - Turn order after Chairman: Bob → Carol → David
-- Bob sells 8,000 shares (receives Rs 4,80,000)
-- Carol sells 15,000 shares (receives Rs 9,00,000) — LIMIT REACHED
+- Bob sells 8,000 shares (receives $480,000)
+- Carol sells 15,000 shares (receives $900,000) — LIMIT REACHED
 - Only 12,000 bought from Carol; 3,000 refused
 - David cannot sell (limit reached)
 
 **Effects of Buyback:**
 - Shares permanently retired from game
-- Total shares outstanding decreases (from 2,00,000)
+- Total shares outstanding decreases (from 200,000)
 - Everyone's ownership percentage increases
-- Stock price increases: **+Rs 5 per 10,000 shares bought back**
+- Stock price increases: **+$5 per 10,000 shares bought back**
 
 **Complete Example:**
-- You're Chairman of Reliance with 1,00,000 shares (50%)
-- Reliance at Rs 75, total shares: 2,00,000
-- You announce buyback: 30,000 shares at Rs 78
-- Players sell 30,000 shares total for Rs 23,40,000
+- You're Chairman of VitalCare Pharma with 100,000 shares (50%)
+- VitalCare Pharma at $75, total shares: 200,000
+- You announce buyback: 30,000 shares at $78
+- Players sell 30,000 shares total for $2,340,000
 - **Results:**
-  - Total shares now: 1,70,000 (30,000 retired)
-  - Your ownership: 1,00,000 of 1,70,000 = 58.8% (was 50%)
-  - Stock price: Rs 75 + Rs 15 (Rs 5 per 10k) = Rs 90
+  - Total shares now: 170,000 (30,000 retired)
+  - Your ownership: 100,000 of 170,000 = 58.8% (was 50%)
+  - Stock price: $75 + $15 ($5 per 10k) = $90
   - Your wealth increased significantly!
 
 **Strategic Uses:**
@@ -445,14 +479,14 @@ Buybacks allow Chairmen to repurchase shares from the market, reducing supply an
 ### Early Game (Rounds 1-3)
 
 1. **Buy Volatile Stocks When Cheap**
-   - Infosys and Reliance at Rs 10-30 are excellent investments
+   - NovaTech and VitalCare Pharma at $10-30 are excellent investments
    - High volatility = high potential returns
    - Your cards will tell you which direction they'll move
 
 2. **Aim for Director Status Fast**
    - 50,000 shares (25%) gives you card suppression power
    - Easier to achieve in early rounds when prices are low
-   - Example: Wockhardt at Rs 15 = only Rs 7,50,000 for Director status
+   - Example: Atlas Bank at $15 = only $750,000 for Director status
 
 3. **Read Your Cards**
    - If you have multiple positive cards for one stock, invest heavily
@@ -480,9 +514,9 @@ Buybacks allow Chairmen to repurchase shares from the market, reducing supply an
      - Using Share Suspended to hurt their stock
      - Buyback to consolidate your own position (if you're Chairman)
 
-8. **Calculate Rights Issued Setups**
+7. **Calculate Rights Issued Setups**
    - If you can buy to 37,000 shares and still afford Rights exercise
-   - Rights at Rs 10 can give you 18,500 more shares cheaply = Director status
+   - Rights at $10 can give you 18,500 more shares cheaply = Director status
    - Watch for others buying large amounts (they're likely setting up for Rights)
 
 ### Late Game (Rounds 8-10)
@@ -504,11 +538,11 @@ Buybacks allow Chairmen to repurchase shares from the market, reducing supply an
     - Timing matters: save it for maximum impact rounds
 
 12. **Understand Stock Volatility Impact**
-    - +5 to +15 in Infosys might be cancelled out by other cards (12 total cards)
-    - +20 in Wockhardt is HUGE (only 4 total cards, hard to counter)
+    - +5 to +15 in NovaTech might be cancelled out by other cards (12 total cards)
+    - +20 in Atlas Bank is HUGE (only 4 total cards, hard to counter)
     - Adjust expectations based on card volume
 
-### Advanced Strategies (Doshi Rules)
+### Advanced Strategies (Investor & Strategist Modes)
 
 13. **Shorting for Defense**
     - Short your opponent's stocks to profit from their misfortune
@@ -539,15 +573,15 @@ Buybacks allow Chairmen to repurchase shares from the market, reducing supply an
 
 ## Common Mistakes
 
-### Beginner Mistakes
+### Trader Mode Mistakes
 
 1. **Buying Without Checking Cards**
    - Always calculate if your cards add to positive/zero before buying
    - Exception: First buyer of market year can ignore this
 
 2. **Buying Fractional Shares**
-   - Minimum 1,000 shares (Rs 5,000 denomination)
-   - Cannot buy 500 shares or Rs 2,000 worth
+   - Minimum 1,000 shares ($5,000 denomination)
+   - Cannot buy 500 shares or $2,000 worth
 
 3. **Forgetting the Buy Condition**
    - You CANNOT buy if your cards for that stock sum to negative
@@ -558,7 +592,7 @@ Buybacks allow Chairmen to repurchase shares from the market, reducing supply an
    - Hold if your cards show positive movement coming
 
 5. **Ignoring Currency Cards**
-   - Keeping Rs 2,00,000 cash with -20% cards = lose Rs 40,000
+   - Keeping $200,000 cash with -20% cards = lose $40,000
    - Could have invested that cash instead
 
 6. **Not Planning for Rights Issued**
@@ -566,15 +600,15 @@ Buybacks allow Chairmen to repurchase shares from the market, reducing supply an
    - Be ready to exercise if you own shares
    - Don't over-invest if you might need cash for Rights
 
-### Intermediate Mistakes
+### Investor Mode Mistakes
 
 7. **Over-Diversifying**
    - Owning 5,000 shares of each company = no control power
    - Focus on 1-2 companies for Director/Chairman status
 
 8. **Under-Estimating Volatility**
-   - Infosys can swing ±30 per round
-   - Wockhardt only swings ±10 per round
+   - NovaTech can swing ±30 per round
+   - Atlas Bank only swings ±10 per round
    - Adjust position sizes accordingly
 
 9. **Missing Share Suspended Opportunities**
@@ -591,10 +625,10 @@ Buybacks allow Chairmen to repurchase shares from the market, reducing supply an
     - Better to save transaction for reactive plays
     - Watch what others do first
 
-### Advanced Mistakes (Doshi Rules)
+### Strategist Mode Mistakes
 
 12. **Shorting Your Own Stock**
-    - Cannot short a stock you own (Doshi Rules v1)
+    - Cannot short a stock you own (Investor Mode)
     - Must sell first, then short
 
 13. **Over-Shorting**
@@ -623,7 +657,7 @@ Buybacks allow Chairmen to repurchase shares from the market, reducing supply an
     - Buyback most effective when close to 50% threshold
 
 18. **Forgetting Buyback Price Rise**
-    - Stock price rises Rs 5 per 10,000 shares bought back
+    - Stock price rises $5 per 10,000 shares bought back
     - Factor this into your calculations
     - Can make buyback very expensive
 
@@ -631,16 +665,16 @@ Buybacks allow Chairmen to repurchase shares from the market, reducing supply an
 
 ## FAQ
 
-### Basic Rules Questions
+### Trader Mode Questions
 
 **Q: Can I buy and sell the same stock in the same market year?**  
 A: Yes, as long as you meet the buy conditions (positive/zero card sum or first buyer).
 
-**Q: What happens if a stock price goes below Rs 0?**  
-A: Stock price cannot go below Rs 0. If calculations would make it negative, it stays at Rs 0.
+**Q: What happens if a stock price goes below $0?**  
+A: Stock price cannot go below $0. If calculations would make it negative, it stays at $0.
 
 **Q: Can stock prices go infinitely high?**  
-A: Yes, there's no upper limit. Prices can exceed Rs 200+ in long games.
+A: Yes, there's no upper limit. Prices can exceed $200+ in long games.
 
 **Q: Do I have to use all 3 transactions?**  
 A: No, you can pass on a transaction if you don't want to act.
@@ -685,13 +719,13 @@ A: Yes, Chairman can remove any player's card including their own.
 **Q: What if two players reach 50% ownership in the same market year?**  
 A: The player who bought shares first in that market year becomes Chairman.
 
-### Doshi Rules v1 (Shorting) Questions
+### Investor Mode (Shorting) Questions
 
 **Q: Can I short a stock I own?**  
 A: No, you must not own any shares of that stock to short it.
 
-**Q: What if I short 10,000 shares and the price goes up Rs 50?**  
-A: You owe Rs 5,00,000 to the bank. Pay it at end of market year.
+**Q: What if I short 10,000 shares and the price goes up $50?**  
+A: You owe $500,000 to the bank. Pay it at end of market year.
 
 **Q: Can I cover my short position mid-year?**  
 A: No, shorts are settled only at end of market year.
@@ -702,7 +736,7 @@ A: 12,000 shares per stock per market year. And the stock can only have 12,000 t
 **Q: If I go bankrupt, do I lose?**  
 A: Yes, you're removed from the game immediately.
 
-### Doshi Rules v2 (Options/Dividends/Buybacks) Questions
+### Strategist Mode (Options/Dividends/Buybacks) Questions
 
 **Q: Can I exercise my option mid-year?**  
 A: No, options are only exercised at end of market year.
@@ -732,7 +766,7 @@ A: No, buyback follows strict turn order. Chairman cannot pick and choose.
 A: They're permanently retired. Total shares outstanding decreases.
 
 **Q: If 30,000 shares are bought back, by how much does the price increase?**  
-A: Rs 15 (Rs 5 per 10,000 shares).
+A: $15 ($5 per 10,000 shares).
 
 ---
 
@@ -742,59 +776,60 @@ A: Rs 15 (Rs 5 per 10,000 shares).
 - ☐ Buy shares (if cards sum to ≥0 or first buyer)
 - ☐ Sell shares
 - ☐ Use special card (Loan/Debenture/Rights)
-- ☐ Use Doshi action (Short/Buy Option)
-- ☐ Issue Dividend (Director/Chairman only)
-- ☐ Announce Buyback (Chairman only)
+- ☐ **Investor Mode:** Short shares
+- ☐ **Strategist Mode:** Buy Option
+- ☐ **Strategist Mode:** Issue Dividend (Director/Chairman only)
+- ☐ **Strategist Mode:** Announce Buyback (Chairman only)
 
 ### End of Market Year Checklist
 1. ✓ All players reveal price cards in turn order
 2. ✓ Calculate new stock prices
 3. ✓ Apply Share Suspended cards (turn order)
 4. ✓ Apply Currency ±10% cards
-5. ✓ Settle short positions (Doshi v1)
-6. ✓ Exercise options (Doshi v2)
+5. ✓ **Investor Mode:** Settle short positions
+6. ✓ **Strategist Mode:** Exercise options
 7. ✓ Rotate dealer position
 8. ✓ Shuffle and deal new cards
 
 ### Ownership Levels
 - **25%** (50,000 shares) = **Director**
   - Remove 1 of your own cards from tally
-  - Can issue dividends up to Rs 10/share (Doshi v2)
+  - Can issue dividends up to $10/share (Strategist Mode)
   
-- **50%** (1,00,000 shares) = **Chairman**
+- **50%** (100,000 shares) = **Chairman**
   - Remove 1 of anyone's cards from tally
-  - Set option premiums for your stock (Doshi v2)
-  - Can issue dividends up to Rs 20/share (Doshi v2)
-  - Can announce buybacks (Doshi v2)
+  - Set option premiums for your stock (Strategist Mode)
+  - Can issue dividends up to $20/share (Strategist Mode)
+  - Can announce buybacks (Strategist Mode)
 
 ### Card Counts by Stock
-- Wockhardt: 4 cards (lowest volatility)
-- HDFC: 6 cards
-- TISCO: 6 cards  
-- ONGC: 8 cards
-- Reliance: 10 cards
-- Infosys: 12 cards (highest volatility)
+- Atlas Bank: 4 cards (lowest volatility)
+- Titan Steel: 6 cards
+- Global Industries: 6 cards  
+- Omega Energy: 8 cards
+- VitalCare Pharma: 10 cards
+- NovaTech: 12 cards (highest volatility)
 
 ### Special Card Summary
-- Loan Stocks Matured: Rs 1,00,000 (2 cards)
-- Debenture: Face value if Rs 0 (2 cards)
-- Rights Issued: 1 share per 2 owned at Rs 10 (2 cards)
+- Loan Stocks Matured: $100,000 (2 cards)
+- Debenture: Face value if $0 (2 cards)
+- Rights Issued: 1 share per 2 owned at $10 (2 cards)
 - Share Suspended: Reset to last year's price (2 cards)
 - Currency +10%: Add 10% to cash (3 cards)
 - Currency -10%: Subtract 10% from cash (3 cards)
 
-### Doshi Rules v1 Limits
+### Investor Mode Limits (Shorting)
 - Short: 1,000 - 12,000 shares per stock
 - Maximum shorting per stock across all players: 12,000 shares
 - Cannot short stocks you own
 - Settlement: End of market year after currency cards
 
-### Doshi Rules v2 Limits
+### Strategist Mode Limits (Options/Dividends/Buybacks)
 - Options: Maximum 20% of shares (40,000) per stock
 - Option Premium: 10% (Chairman can adjust ±5%)
-- Director Dividend: Up to Rs 10/share
-- Chairman Dividend: Up to Rs 20/share
-- Buyback Price Increase: +Rs 5 per 10,000 shares
+- Director Dividend: Up to $10/share
+- Chairman Dividend: Up to $20/share
+- Buyback Price Increase: +$5 per 10,000 shares
 
 ---
 
@@ -808,4 +843,14 @@ In case of tie: Player with the most cash wins.
 
 ---
 
-*Document created by experienced players. These rules include official Zephyr rules plus advanced "Doshi Rules" developed through extensive gameplay. Start with Basic Rules, add Shorting when comfortable, then progress to Options/Dividends/Buybacks for maximum strategic depth.*
+## Game Mode Progression
+
+**🎯 Trader Mode** → Learn fundamentals  
+**📊 Investor Mode** → Add shorting strategies  
+**👔 Strategist Mode** → Master options, dividends, and buybacks  
+**🏆 Tycoon Mode** → Coming soon  
+**💎 Mogul Mode** → Coming soon  
+
+---
+
+*Document created by experienced players. Start with Trader Mode to learn the fundamentals, progress to Investor Mode to add shorting, then master Strategist Mode for complete strategic depth. Tycoon and Mogul modes will be added in future updates.*
