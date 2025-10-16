@@ -51,14 +51,7 @@ CREATE TABLE game_players (
 
     -- Constraints
     UNIQUE (game_id, user_id), -- User can only join a game once
-    UNIQUE (game_id, player_position), -- Each position unique per game
-    CONSTRAINT position_within_player_count CHECK (
-        player_position <= (SELECT player_count FROM games WHERE game_id = game_players.game_id)
-    ),
-    CONSTRAINT final_rank_when_completed CHECK (
-        final_rank IS NULL OR
-        (SELECT status FROM games WHERE game_id = game_players.game_id) = 'completed'
-    )
+    UNIQUE (game_id, player_position) -- Each position unique per game
 );
 
 -- Indexes for performance
@@ -168,3 +161,35 @@ CREATE TRIGGER set_starting_capital_trigger
     BEFORE INSERT ON game_players
     FOR EACH ROW
     EXECUTE FUNCTION set_player_starting_capital();
+
+-- Function to validate player position and final rank
+CREATE OR REPLACE FUNCTION validate_game_player()
+RETURNS TRIGGER AS $$
+DECLARE
+    v_player_count INTEGER;
+    v_game_status VARCHAR(20);
+BEGIN
+    -- Get game info
+    SELECT player_count, status INTO v_player_count, v_game_status
+    FROM games
+    WHERE game_id = NEW.game_id;
+
+    -- Validate player_position is within player_count
+    IF NEW.player_position > v_player_count THEN
+        RAISE EXCEPTION 'player_position % exceeds game player_count of %', NEW.player_position, v_player_count;
+    END IF;
+
+    -- Validate final_rank only set when game is completed
+    IF NEW.final_rank IS NOT NULL AND v_game_status != 'completed' THEN
+        RAISE EXCEPTION 'final_rank can only be set when game status is completed, current status: %', v_game_status;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger to validate player constraints
+CREATE TRIGGER validate_game_player_trigger
+    BEFORE INSERT OR UPDATE ON game_players
+    FOR EACH ROW
+    EXECUTE FUNCTION validate_game_player();
