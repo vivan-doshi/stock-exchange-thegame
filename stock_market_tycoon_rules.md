@@ -1,35 +1,38 @@
 # Stock Market Tycoon
-## Complete Rules Guide with Doshi Rules
+## Complete Rules Guide - Standard & Extended Variants
 
 ---
 
 ## Table of Contents
 1. [Game Overview](#game-overview)
-2. [Game Modes](#game-modes)
-3. [Game Components](#game-components)
-4. [Setup](#setup)
-5. [Trader Mode: Basic Rules](#trader-mode-basic-rules)
-6. [Special Cards](#special-cards)
-7. [Special Powers](#special-powers)
-8. [Investor Mode: Shorting](#investor-mode-shorting)
-9. [Strategist Mode: Options, Dividends & Buybacks](#strategist-mode-options-dividends--buybacks)
-10. [Strategies to Win](#strategies-to-win)
-11. [Common Mistakes](#common-mistakes)
-12. [FAQ](#faq)
-13. [Quick Reference](#quick-reference)
+2. [Game Variants](#game-variants)
+3. [Game Modes](#game-modes)
+4. [Game Components](#game-components)
+5. [Setup](#setup)
+6. [Trader Mode: Basic Rules](#trader-mode-basic-rules)
+7. [Special Cards](#special-cards)
+8. [Special Powers](#special-powers)
+9. [Investor Mode: Shorting](#investor-mode-shorting)
+10. [Strategist Mode: Options, Dividends & Buybacks](#strategist-mode-options-dividends--buybacks)
+11. [Strategies to Win](#strategies-to-win)
+12. [Common Mistakes](#common-mistakes)
+13. [FAQ](#faq)
+14. [Quick Reference](#quick-reference)
 
 ---
 
 ## Game Overview
 
-Stock Market Tycoon is a 2-6 player stock market simulation game where players act as investors buying and selling shares in 6 different companies over 10 rounds (market years). The player with the highest net worth (cash + stock value) at the end wins.
+Stock Market Tycoon is a 2-12 player stock market simulation game where players act as investors buying and selling shares in 6 different companies over 10 rounds (market years). The player with the highest net worth (cash + stock value) at the end wins.
 
 **Game Length:** 10 rounds (market years)  
-**Players:** 2-6  
+**Players:** 2-12 (two variants available)  
 **Each Round:** Maximum 3 transactions (sub-rounds)  
-**Starting Capital:** $600,000 per player
+**Starting Capital:** $600,000 per player (Standard) or $450,000 per player (Extended)
 
 ### The Six Companies
+
+**Standard Variant (2-6 Players):**
 
 | Stock | Sector | Starting Price | Maximum Shares | Volatility |
 |-------|--------|---------------|----------------|------------|
@@ -39,6 +42,59 @@ Stock Market Tycoon is a 2-6 player stock market simulation game where players a
 | Omega Energy | Energy | $55 | 200,000 | Medium-High (8 price cards) |
 | VitalCare Pharma | Healthcare | $75 | 200,000 | High (10 price cards) |
 | NovaTech | Technology | $80 | 200,000 | Very High (12 price cards) |
+
+**Extended Variant (7-12 Players):**
+
+| Stock | Sector | Starting Price | Maximum Shares | Volatility |
+|-------|--------|---------------|----------------|------------|
+| Atlas Bank | Banking | $20 | 300,000 | Low (4 price cards) |
+| Titan Steel | Manufacturing | $25 | 300,000 | Medium-Low (6 price cards) |
+| Global Industries | Conglomerate | $45 | 300,000 | Medium (6 price cards) |
+| Omega Energy | Energy | $55 | 300,000 | Medium-High (8 price cards) |
+| VitalCare Pharma | Healthcare | $75 | 300,000 | High (10 price cards) |
+| NovaTech | Technology | $80 | 300,000 | Very High (12 price cards) |
+
+---
+
+## Game Variants
+
+Stock Market Tycoon supports two player count variants with different scaling:
+
+### Standard Variant (2-6 Players)
+
+**Deck Size:** 108 cards (1x deck)  
+**Starting Capital:** $600,000 per player  
+**Maximum Shares per Stock:** 200,000  
+**Director Threshold:** 50,000 shares (25%)  
+**Chairman Threshold:** 100,000 shares (50%)  
+**Cards per Player per Round:** ~10 cards  
+
+**Best For:**
+- Traditional gameplay experience
+- Learning the game
+- Shorter game sessions (2-3 hours)
+- More achievable Director/Chairman status
+
+### Extended Variant (7-12 Players)
+
+**Deck Size:** 216 cards (2x deck - two copies of every card)  
+**Starting Capital:** $450,000 per player  
+**Maximum Shares per Stock:** 300,000  
+**Director Threshold:** 60,000 shares (20%)  
+**Chairman Threshold:** 120,000 shares (40%)  
+**Cards per Player per Round:** ~8-10 cards  
+
+**Best For:**
+- Large group gatherings
+- Party game nights
+- More competitive control battles
+- Experienced players who want chaos
+
+**Why the Changes?**
+- **Double deck:** Ensures enough cards for 7-12 players
+- **More shares:** Prevents market exhaustion with many buyers
+- **Lower capital:** Maintains scarcity and competition
+- **Lower thresholds:** Keeps Director/Chairman achievable but competitive
 
 ---
 
@@ -56,36 +112,42 @@ Stock Market Tycoon features a progressive difficulty system with 5 levels. Mast
 **Adds:** Shorting mechanics - bet against stocks for profit  
 **Best for:** Players who understand market basics and want advanced risk management
 
-### 👔 Strategist Mode (Level 3)
+### 💼 Strategist Mode (Level 3)
 **Unlock:** Win 2 games in Investor Mode  
 **Adds:** Options trading (calls & puts), Dividends, Stock buybacks  
 **Best for:** Advanced players seeking maximum strategic depth and corporate control
 
 ### 🏆 Tycoon Mode (Level 4)
 **Status:** Coming Soon  
-**Description:** Ultimate challenge with additional advanced mechanics
 
 ### 💎 Mogul Mode (Level 5)
 **Status:** Coming Soon  
-**Description:** Master-level gameplay for the ultimate stock market legend
 
-*Note: This guide covers Trader, Investor, and Strategist modes. Tycoon and Mogul modes will be added in future updates.*
+*Note: This guide covers Trader, Investor, and Strategist modes.*
 
 ---
 
 ## Game Components
 
+### Standard Variant (2-6 Players)
 - 1 Game Board
 - 108 Information Cards (price cards + special cards)
 - 1 Pad Share Price Chart
-- 102 Share Blocks
+- 102 Share Blocks (representing 200,000 shares per stock)
 - 6 Chairman Chips
-- 117 Rupee Notes
-- Guide Book
+- Currency Notes for $600,000 per player
+
+### Extended Variant (7-12 Players)
+- 1 Game Board
+- 216 Information Cards (2x deck - doubled price cards + special cards)
+- 1 Pad Share Price Chart
+- 153 Share Blocks (representing 300,000 shares per stock)
+- 6 Chairman Chips
+- Currency Notes for $450,000 per player
 
 ### Card Distribution
 
-**Price Cards by Stock:**
+**Price Cards by Stock (Standard - 1x deck):**
 
 | Stock | Card Values | Number of Cards |
 |-------|-------------|-----------------|
@@ -96,17 +158,30 @@ Stock Market Tycoon features a progressive difficulty system with 5 levels. Mast
 | VitalCare Pharma | -25, -20, -15, -10, -5, +5, +10, +15, +20, +25 | 10 |
 | NovaTech | -30, -25, -20, -15, -10, -5, +5, +10, +15, +20, +25, +30 | 12 |
 
-**Special Cards:** (detailed in Special Cards section)
+**Extended Variant:** Double all card counts above (2 copies of each card)
+
+**Special Cards:** 14 total (same in both variants - see Special Cards section)
 
 ---
 
 ## Setup
 
+### Standard Variant Setup (2-6 Players)
+
 1. **Choose Dealer**: Select a starting dealer (rotates each round)
 2. **Distribute Money**: Each player receives $600,000
 3. **Set Starting Prices**: Mark all stocks at their starting prices on the share price chart
 4. **Prepare Cards**: Shuffle all 108 cards together
-5. **Share Blocks**: Place share blocks within reach of all players
+5. **Share Blocks**: Place share blocks within reach (200,000 per stock available)
+
+### Extended Variant Setup (7-12 Players)
+
+1. **Choose Dealer**: Select a starting dealer (rotates each round)
+2. **Distribute Money**: Each player receives $450,000
+3. **Set Starting Prices**: Mark all stocks at their starting prices on the share price chart
+4. **Prepare Cards**: Shuffle all 216 cards together (2x deck)
+5. **Share Blocks**: Place share blocks within reach (300,000 per stock available)
+6. **Confirm Thresholds**: Announce Director (60,000 shares / 20%) and Chairman (120,000 shares / 40%) thresholds
 
 ---
 
@@ -161,19 +236,19 @@ You can ONLY buy a stock if the price cards in your hand for that stock add up t
 ### Transaction Cards
 (These take up one of your transaction turns)
 
-#### Loan Stocks Matured (2 cards)
+#### Loan Stocks Matured (2 cards in Standard, 4 cards in Extended)
 - Receive $100,000 from the bank
 - Must be used during a transaction round (cannot claim at end of round)
 - Uses one entire transaction
 
-#### Debenture (2 cards)
+#### Debenture (2 cards in Standard, 4 cards in Extended)
 - **Condition**: Stock must hit $0 in the SAME round you received this card AND you must own shares
 - **Effect**: Receive face value (original starting price) for ALL your shares of that stock
 - Example: Global Industries crashes to $0, you own 10,000 shares → receive $450,000 (10,000 × $45)
 - Must be used during a transaction round
 - Uses one entire transaction
 
-#### Rights Issued (2 cards)
+#### Rights Issued (2 cards in Standard, 4 cards in Extended)
 - Buy 1 share for every 2 shares you own at $10 per share
 - **Important**: When you use this, every player sitting AFTER you in that same transaction round can also exercise this right if they own shares in that company
 - Example: You're Player 1 of 4, you use Rights on Titan Steel in Transaction 2
@@ -184,35 +259,36 @@ You can ONLY buy a stock if the price cards in your hand for that stock add up t
 ### End-of-Year Cards
 (These are applied after all transactions complete)
 
-#### Share Suspended (2 cards)
+#### Share Suspended (2 cards in Standard, 4 cards in Extended)
 - **Timing**: Applied AFTER all price changes are calculated at end of market year
 - **Effect**: Resets ONE stock's price back to the previous market year's price (NOT face value)
 - **Order**: Players use these in turn order (right of dealer to dealer)
 - **Power**: Cannot be overridden by Director or Chairman powers
 - **Strategy**: Use to suspend your closest competitor's stock or the biggest gainer
 
-#### Currency +10% (3 cards)
+#### Currency +10% (3 cards in Standard, 6 cards in Extended)
 - Add 10% to your cash holdings (uninvested money only)
 - **Stacking**: Multiple cards stack (2 cards = +20%, 3 cards = +30%)
 - Can cancel with -10% cards (one +10% and one -10% = 0% effect)
 - Applied AFTER stock prices are finalized
 - Only affects cash in hand, NOT invested in stocks
-- If you have Rs 0 cash (100% invested), no effect
+- If you have $0 cash (100% invested), no effect
 
-#### Currency -10% (3 cards)
+#### Currency -10% (3 cards in Standard, 6 cards in Extended)
 - Subtract 10% from your cash holdings (uninvested money only)
 - **Stacking**: Multiple cards stack (2 cards = -20%)
 - Applied AFTER stock prices are finalized
 - Only affects cash in hand, NOT invested in stocks
-- If you have Rs 0 cash (100% invested), no effect
+- If you have $0 cash (100% invested), no effect
 
 ---
 
 ## Special Powers
 
-### Director (25% Ownership)
+### Director
 
-**Requirement:** Own 50,000 shares (25% of 2,00,000)
+**Standard Variant:** 50,000 shares (25% of 200,000)  
+**Extended Variant:** 60,000 shares (20% of 300,000)
 
 **Power:** Remove ONE of your own price cards from the end-of-year tally for that stock
 
@@ -223,11 +299,12 @@ You can ONLY buy a stock if the price cards in your hand for that stock add up t
 
 **Multiple Companies:** You can be Director of multiple companies simultaneously
 
-**Tiebreaker:** If 2 players both have 25-49.9% ownership, the player with MORE shares becomes Director
+**Tiebreaker:** If 2 players both have ownership between Director and Chairman thresholds, the player with MORE shares becomes Director
 
-### Chairman (50% Ownership)
+### Chairman
 
-**Requirement:** Own 1,00,000 shares (50% of 2,00,000)
+**Standard Variant:** 100,000 shares (50% of 200,000)  
+**Extended Variant:** 120,000 shares (40% of 300,000)
 
 **Power:** Remove ONE card from ANY PLAYER for that stock from the end-of-year tally
 
@@ -236,7 +313,7 @@ You can ONLY buy a stock if the price cards in your hand for that stock add up t
 - Much stronger than Director (can target opponents)
 - Strategic: Cancel the worst negative card against your stock, or prevent a competitor's positive card
 
-**Only One Chairman:** If 2 players reach 50%, the FIRST to reach it becomes Chairman, the other becomes Director
+**Only One Chairman:** If 2 players reach the threshold, the FIRST to reach it becomes Chairman, the other becomes Director
 
 **Limitation:** CANNOT override Share Suspended special cards
 
@@ -329,9 +406,12 @@ Options give you the RIGHT (but not obligation) to buy or sell shares at a prede
 #### Option Mechanics
 
 **Availability:**
-- Maximum 20% of each stock's shares can be under options per round
-- Per stock limit: 40,000 shares (20% of 2,00,000)
-- First-come, first-served within each market year
+
+**Standard Variant:** Maximum 20% of each stock's shares can be under options per round
+- Per stock limit: 40,000 shares (20% of 200,000)
+
+**Extended Variant:** Maximum 20% of each stock's shares can be under options per round
+- Per stock limit: 60,000 shares (20% of 300,000)
 
 **Premium Rate:**
 - Base premium: 10% of total strike value
@@ -362,22 +442,21 @@ Options give you the RIGHT (but not obligation) to buy or sell shares at a prede
 - Options DO NOT qualify for Rights Issued
 - Options are pure speculation without control benefits
 
-**Why Buy Stocks Instead of Options?**
-1. Director/Chairman powers only come from stock ownership
-2. Higher absolute profits on large moves
-3. Eligible for dividends
-4. Can exercise Rights Issued
-5. No premium cost eating into profits
-
 ### Dividends
 
 Dividends allow Directors and Chairmen to extract cash from the company and pay all shareholders.
 
 #### Who Can Issue Dividends
 
-- **Director** (25-49.9% ownership): Up to $10 per share
+**Standard Variant:**
+- **Director** (25-49% ownership): Up to $10 per share
 - **Chairman** (50%+ ownership): Up to $20 per share
-- Both can issue in the same round (cumulative effect)
+
+**Extended Variant:**
+- **Director** (20-39% ownership): Up to $10 per share
+- **Chairman** (40%+ ownership): Up to $20 per share
+
+Both can issue in the same round (cumulative effect)
 
 #### Dividend Mechanics
 
@@ -404,21 +483,13 @@ Dividends allow Directors and Chairmen to extract cash from the company and pay 
 - Reward shareholders (including yourself)
 - Deny put option holders (their strike becomes less valuable)
 
-#### Director Dividends When Chairman Exists
-
-If both Director and Chairman exist for a company:
-- Director can still issue dividend (up to Rs 10/share) independently
-- Chairman can issue dividend (up to Rs 20/share) independently  
-- If both issue in same round, both pay out (cumulative)
-- This is rare since both use transaction slots
-
 ### Buybacks
 
 Buybacks allow Chairmen to repurchase shares from the market, reducing supply and increasing price.
 
 #### Who Can Issue Buybacks
 
-**Only Chairman** (50%+ ownership)
+**Both Variants:** Chairman only
 
 #### Buyback Mechanics
 
@@ -426,7 +497,7 @@ Buybacks allow Chairmen to repurchase shares from the market, reducing supply an
 - Uses one transaction turn
 - Chairman declares:
   - Number of shares to buy back (e.g., 20,000)
-  - Price per share (e.g., Rs 55)
+  - Price per share (e.g., $55)
 
 **Selling Priority - Turn Order:**
 1. Starting with the NEXT player in turn order after Chairman
@@ -445,12 +516,12 @@ Buybacks allow Chairmen to repurchase shares from the market, reducing supply an
 
 **Effects of Buyback:**
 - Shares permanently retired from game
-- Total shares outstanding decreases (from 200,000)
+- Total shares outstanding decreases
 - Everyone's ownership percentage increases
 - Stock price increases: **+$5 per 10,000 shares bought back**
 
-**Complete Example:**
-- You're Chairman of VitalCare Pharma with 100,000 shares (50%)
+**Complete Example (Standard Variant):**
+- You're Chairman of VitalCare Pharma with 100,000 shares (50% of 200,000)
 - VitalCare Pharma at $75, total shares: 200,000
 - You announce buyback: 30,000 shares at $78
 - Players sell 30,000 shares total for $2,340,000
@@ -468,10 +539,6 @@ Buybacks allow Chairmen to repurchase shares from the market, reducing supply an
 - Defend against hostile takeover attempts
 - Create upward price momentum
 
-**Timing Strategy:**
-- Announce in Transaction 1: More players get a chance to sell
-- Announce in Transaction 3: Fewer opportunities for opponents, more control over who benefits
-
 ---
 
 ## Strategies to Win
@@ -484,293 +551,123 @@ Buybacks allow Chairmen to repurchase shares from the market, reducing supply an
    - Your cards will tell you which direction they'll move
 
 2. **Aim for Director Status Fast**
-   - 50,000 shares (25%) gives you card suppression power
+   - **Standard:** 50,000 shares (25%)
+   - **Extended:** 60,000 shares (20%)
    - Easier to achieve in early rounds when prices are low
-   - Example: Atlas Bank at $15 = only $750,000 for Director status
+   - Example (Standard): Atlas Bank at $15 = only $750,000 for Director status
+   - Example (Extended): Atlas Bank at $15 = only $900,000 for Director status
 
 3. **Read Your Cards**
    - If you have multiple positive cards for one stock, invest heavily
-   - If you have negative cards, avoid that stock OR consider shorting (Doshi Rules)
-
-4. **First Buyer Exception**
-   - Take advantage of being first buyer with negative cards
-   - Can establish early position before others
+   - If you have negative cards, avoid that stock OR consider shorting (Investor Mode)
 
 ### Mid Game (Rounds 4-7)
 
-5. **Push for Chairman Control**
-   - 1,00,000 shares (50%) gives massive power
+4. **Push for Chairman Control**
+   - **Standard:** 100,000 shares (50%)
+   - **Extended:** 120,000 shares (40%)
    - Can manipulate stock prices by removing any player's cards
    - Your controlled stock becomes your wealth multiplier
 
-6. **Diversify Carefully**
-   - Don't spread too thin
-   - Better to control 1-2 stocks strongly than own small amounts of many
-   - Exception: Options allow cheap diversification (Doshi Rules v2)
-
-7. **Watch Competitor Positions**
-   - If someone is approaching Director/Chairman, consider:
+5. **Watch Competitor Positions (ESPECIALLY in Extended Variant)**
+   - With 7-12 players, control battles are fierce
+   - If someone is approaching thresholds, consider:
      - Buying to block them
      - Using Share Suspended to hurt their stock
-     - Buyback to consolidate your own position (if you're Chairman)
+     - Buyback to consolidate your position (if Chairman)
 
-7. **Calculate Rights Issued Setups**
-   - If you can buy to 37,000 shares and still afford Rights exercise
-   - Rights at $10 can give you 18,500 more shares cheaply = Director status
-   - Watch for others buying large amounts (they're likely setting up for Rights)
+6. **Extended Variant Tip: Lower Starting Capital Matters**
+   - With $450k vs $600k, every transaction counts more
+   - Be more conservative early
+   - Focus on 1-2 stocks max for control
 
 ### Late Game (Rounds 8-10)
 
-9. **Lock In Profits Safely**
-   - If ahead, shift to safer stocks (Wockhardt, HDFC)
-   - Use dividends to extract value from expensive stocks (Doshi Rules v2)
+7. **Lock In Profits**
+   - If ahead, shift to safer stocks
+   - Use dividends to extract value (Strategist Mode)
    - Consider options for speculation instead of risky stock purchases
 
-10. **Manage Cash vs Investment**
-    - Watch for Currency +10% / -10% cards in your hand
-    - If you have -10% cards, invest all cash in stocks
-    - If you have +10% cards, keep some cash uninvested
-    - Balance risk of keeping cash vs being fully invested
-
-11. **Use Share Suspended Strategically**
-    - Target the player in first place
-    - OR target the stock that gained the most this round
-    - Timing matters: save it for maximum impact rounds
-
-12. **Understand Stock Volatility Impact**
-    - +5 to +15 in NovaTech might be cancelled out by other cards (12 total cards)
-    - +20 in Atlas Bank is HUGE (only 4 total cards, hard to counter)
-    - Adjust expectations based on card volume
-
-### Advanced Strategies (Investor & Strategist Modes)
-
-13. **Shorting for Defense**
-    - Short your opponent's stocks to profit from their misfortune
-    - Maximum impact when you know they'll crash (based on your cards)
-    - Limit risk: only short 12,000 shares maximum
-
-14. **Options for Leverage**
-    - If you have great cards but limited cash, buy call options
-    - 10% premium controls full position
-    - Loss limited to premium if wrong
-
-15. **Dividend Timing**
-    - Issue dividends EARLY in round so you can reinvest the cash
-    - Or issue LATE to deny opponents the chance to use the cash
-    - Use to crash stock price if you have put options
-
-16. **Buyback for Control**
-    - When approaching 50%, use buyback to push over the edge
-    - Reduces shares outstanding = increases your %
-    - Bonus: stock price rises too
-
-17. **Chairman Premium Manipulation**
-    - Set low premiums (5%) to encourage options instead of share buying
-    - Protects your chairmanship (fewer people buying actual shares)
-    - Set high premiums (15%) when you want to discourage speculation
+8. **Manage Cash vs Investment**
+   - Watch for Currency +10% / -10% cards
+   - Extended Variant: More Currency cards in play = higher variance
+   - If you have -10% cards, invest all cash
+   - If you have +10% cards, keep some cash uninvested
 
 ---
 
 ## Common Mistakes
 
-### Trader Mode Mistakes
+### Standard Variant Specific
 
-1. **Buying Without Checking Cards**
-   - Always calculate if your cards add to positive/zero before buying
-   - Exception: First buyer of market year can ignore this
+1. **Over-Diversifying**
+   - With 200,000 shares available, spreading too thin is common
+   - Focus on 1-2 companies for control
 
-2. **Buying Fractional Shares**
-   - Minimum 1,000 shares ($5,000 denomination)
-   - Cannot buy 500 shares or $2,000 worth
+### Extended Variant Specific
 
-3. **Forgetting the Buy Condition**
-   - You CANNOT buy if your cards for that stock sum to negative
-   - Many new players miss this critical rule
+2. **Underestimating Competition**
+   - With 7-12 players, control is MUCH harder
+   - Lower thresholds help, but still need ~$900k-$5M for Chairman
+   - Focus fire on one stock early
 
-4. **Selling at the Wrong Time**
-   - Selling right before a stock rises (based on your cards)
-   - Hold if your cards show positive movement coming
+3. **Ignoring Lower Starting Capital**
+   - $450k vs $600k is a 25% reduction
+   - Can't afford as many early mistakes
+   - Rights Issued becomes MORE valuable (cheap shares)
 
-5. **Ignoring Currency Cards**
-   - Keeping $200,000 cash with -20% cards = lose $40,000
-   - Could have invested that cash instead
-
-6. **Not Planning for Rights Issued**
-   - Others buying at high prices likely have Rights Issued card
-   - Be ready to exercise if you own shares
-   - Don't over-invest if you might need cash for Rights
-
-### Investor Mode Mistakes
-
-7. **Over-Diversifying**
-   - Owning 5,000 shares of each company = no control power
-   - Focus on 1-2 companies for Director/Chairman status
-
-8. **Under-Estimating Volatility**
-   - NovaTech can swing ±30 per round
-   - Atlas Bank only swings ±10 per round
-   - Adjust position sizes accordingly
-
-9. **Missing Share Suspended Opportunities**
-   - Not using Share Suspended on the right target
-   - Timing it poorly (wasting it on small moves)
-
-10. **Ignoring Turn Order**
-    - Being last (dealer) means missing out on Rights Issued benefits
-    - Being first means you can't see others' moves
-    - Plan accordingly
-
-11. **Poor Transaction Slot Management**
-    - Using all 3 transactions too quickly
-    - Better to save transaction for reactive plays
-    - Watch what others do first
-
-### Strategist Mode Mistakes
-
-12. **Shorting Your Own Stock**
-    - Cannot short a stock you own (Investor Mode)
-    - Must sell first, then short
-
-13. **Over-Shorting**
-    - 12,000 share limit exists for a reason
-    - Going bankrupt ends your game
-    - Only short what you can afford to lose
-
-14. **Buying Options When You Need Control**
-    - Options don't count toward Director/Chairman
-    - If your goal is control, buy actual shares
-    - Options are for speculation, not governance
-
-15. **Ignoring Option Premiums**
-    - At 15% premium, options become expensive
-    - Sometimes better to just buy shares
-    - Calculate break-even before committing
-
-16. **Poor Dividend Timing**
-    - Issuing dividend in Transaction 3 = opponents can't use the cash
-    - Issuing in Transaction 1 = opponents can reinvest immediately
-    - Choose based on your strategy
-
-17. **Wasteful Buybacks**
-    - Buying back when already at 70% ownership = diminishing returns
-    - Better to deploy cash elsewhere
-    - Buyback most effective when close to 50% threshold
-
-18. **Forgetting Buyback Price Rise**
-    - Stock price rises $5 per 10,000 shares bought back
-    - Factor this into your calculations
-    - Can make buyback very expensive
+4. **Not Adapting to Card Frequency**
+   - Double deck = cards appear twice
+   - Share Suspended appears 4 times (vs 2)
+   - Currency cards appear 12 times total (vs 6)
+   - Adjust strategies accordingly
 
 ---
 
 ## FAQ
 
-### Trader Mode Questions
+### Variant Questions
 
-**Q: Can I buy and sell the same stock in the same market year?**  
-A: Yes, as long as you meet the buy conditions (positive/zero card sum or first buyer).
+**Q: Can I mix variants? Like 7 players with Standard rules?**  
+A: Not recommended. Use Extended rules for 7+ players to ensure enough cards and shares.
 
-**Q: What happens if a stock price goes below $0?**  
-A: Stock price cannot go below $0. If calculations would make it negative, it stays at $0.
+**Q: What if we only have 6 players but want to try Extended rules?**  
+A: You can! It will be more competitive with lower thresholds, but the game works fine.
 
-**Q: Can stock prices go infinitely high?**  
-A: Yes, there's no upper limit. Prices can exceed $200+ in long games.
+**Q: In Extended variant, do Special Cards work differently?**  
+A: No, all special cards work identically. There are just more of them (doubled).
 
-**Q: Do I have to use all 3 transactions?**  
-A: No, you can pass on a transaction if you don't want to act.
+**Q: In Extended variant, can I still buy/sell in 1,000 share minimums?**  
+A: Yes, the $5,000 / 1,000 share minimum is the same in both variants.
 
-**Q: Can I trade shares directly with another player?**  
-A: Not in the basic rules. All transactions go through the bank at current market price.
+**Q: Does the Extended variant change game length?**  
+A: With more players, rounds take longer (more transactions). Expect 3-4 hours for 10-12 players vs 2-3 hours for 4-6 players.
 
-**Q: What if I run out of money?**  
-A: You can still play! Sell shares to generate cash, or use Loan Stocks Matured card if you get it.
+### Ownership Questions
 
-### Special Cards Questions
+**Q: In Extended variant, if I have 55,000 shares, am I Director?**  
+A: No. You need 60,000 shares (20% of 300,000) for Director status.
 
-**Q: Can I use Loan Stocks Matured at the end of the round after transactions?**  
-A: No, it must be used during one of the 3 transaction rounds.
+**Q: Can there be multiple Directors in Extended variant?**  
+A: Yes, if multiple players have 20-39% ownership. The player with the most shares gets Director powers if only one slot.
 
-**Q: Can I save a Share Suspended card for a future round?**  
-A: No, Share Suspended must be used at the end of the market year you receive it.
-
-**Q: If I have 2 Currency +10% cards and 1 Currency -10% card, what's the net effect?**  
-A: +10% total (they add algebraically: +10% +10% -10% = +10%).
-
-**Q: Can Chairman/Director powers override Share Suspended?**  
-A: No, Share Suspended cannot be overridden by any power.
-
-**Q: When exactly are Currency cards applied?**  
-A: At the very end of the market year, after all price changes and Share Suspended cards.
-
-### Special Powers Questions
-
-**Q: Can I be Director of multiple companies?**  
-A: Yes, if you own 25%+ of multiple companies.
-
-**Q: Can I be Chairman of multiple companies?**  
-A: Yes, if you own 50%+ of multiple companies.
-
-**Q: If I'm Director with 40% ownership and someone else gets 50%, what happens?**  
-A: They become Chairman, you remain Director. If someone else then gets 35%, the person with 40% remains Director.
-
-**Q: Can the Chairman remove their own card?**  
-A: Yes, Chairman can remove any player's card including their own.
-
-**Q: What if two players reach 50% ownership in the same market year?**  
-A: The player who bought shares first in that market year becomes Chairman.
-
-### Investor Mode (Shorting) Questions
-
-**Q: Can I short a stock I own?**  
-A: No, you must not own any shares of that stock to short it.
-
-**Q: What if I short 10,000 shares and the price goes up $50?**  
-A: You owe $500,000 to the bank. Pay it at end of market year.
-
-**Q: Can I cover my short position mid-year?**  
-A: No, shorts are settled only at end of market year.
-
-**Q: What's the maximum I can short?**  
-A: 12,000 shares per stock per market year. And the stock can only have 12,000 total shares shorted across all players.
-
-**Q: If I go bankrupt, do I lose?**  
-A: Yes, you're removed from the game immediately.
-
-### Strategist Mode (Options/Dividends/Buybacks) Questions
-
-**Q: Can I exercise my option mid-year?**  
-A: No, options are only exercised at end of market year.
-
-**Q: If I buy a call option and the stock drops, do I lose more than the premium?**  
-A: No, your maximum loss is the premium paid.
-
-**Q: Do options count toward Director/Chairman ownership?**  
-A: No, only actual share ownership counts.
-
-**Q: Can I receive dividends on my call options?**  
-A: No, only actual shareholders receive dividends.
-
-**Q: If I'm Chairman with 60% ownership, can I issue multiple dividends per round?**  
-A: No, each dividend uses one transaction. You could issue in Transaction 1 and Transaction 3, but that uses 2 of your 3 transactions.
-
-**Q: Does issuing a dividend affect my Chairman status?**  
-A: No, you still own the same number of shares. The price drops but your ownership % stays the same.
-
-**Q: In a buyback, what if I want to sell but I'm last in turn order?**  
-A: You might miss out if the buyback limit is reached before your turn. That's why turn order matters.
-
-**Q: Can Chairman refuse to buy back from specific players?**  
-A: No, buyback follows strict turn order. Chairman cannot pick and choose.
-
-**Q: What happens to shares bought back?**  
-A: They're permanently retired. Total shares outstanding decreases.
-
-**Q: If 30,000 shares are bought back, by how much does the price increase?**  
-A: $15 ($5 per 10,000 shares).
+**Q: In Extended variant with 12 players, is it harder to become Chairman?**  
+A: Yes and no. The threshold is lower (40% vs 50%) but there's more competition. It balances out.
 
 ---
 
 ## Quick Reference
+
+### Variant Comparison
+
+| Feature | Standard (2-6) | Extended (7-12) |
+|---------|----------------|-----------------|
+| Deck Size | 108 cards | 216 cards (2x) |
+| Starting Capital | $600,000 | $450,000 |
+| Shares per Stock | 200,000 | 300,000 |
+| Director Threshold | 50,000 (25%) | 60,000 (20%) |
+| Chairman Threshold | 100,000 (50%) | 120,000 (40%) |
+| Options Limit | 40,000/stock | 60,000/stock |
 
 ### Transaction Actions (Choose ONE per turn)
 - ☐ Buy shares (if cards sum to ≥0 or first buyer)
@@ -780,56 +677,6 @@ A: $15 ($5 per 10,000 shares).
 - ☐ **Strategist Mode:** Buy Option
 - ☐ **Strategist Mode:** Issue Dividend (Director/Chairman only)
 - ☐ **Strategist Mode:** Announce Buyback (Chairman only)
-
-### End of Market Year Checklist
-1. ✓ All players reveal price cards in turn order
-2. ✓ Calculate new stock prices
-3. ✓ Apply Share Suspended cards (turn order)
-4. ✓ Apply Currency ±10% cards
-5. ✓ **Investor Mode:** Settle short positions
-6. ✓ **Strategist Mode:** Exercise options
-7. ✓ Rotate dealer position
-8. ✓ Shuffle and deal new cards
-
-### Ownership Levels
-- **25%** (50,000 shares) = **Director**
-  - Remove 1 of your own cards from tally
-  - Can issue dividends up to $10/share (Strategist Mode)
-  
-- **50%** (100,000 shares) = **Chairman**
-  - Remove 1 of anyone's cards from tally
-  - Set option premiums for your stock (Strategist Mode)
-  - Can issue dividends up to $20/share (Strategist Mode)
-  - Can announce buybacks (Strategist Mode)
-
-### Card Counts by Stock
-- Atlas Bank: 4 cards (lowest volatility)
-- Titan Steel: 6 cards
-- Global Industries: 6 cards  
-- Omega Energy: 8 cards
-- VitalCare Pharma: 10 cards
-- NovaTech: 12 cards (highest volatility)
-
-### Special Card Summary
-- Loan Stocks Matured: $100,000 (2 cards)
-- Debenture: Face value if $0 (2 cards)
-- Rights Issued: 1 share per 2 owned at $10 (2 cards)
-- Share Suspended: Reset to last year's price (2 cards)
-- Currency +10%: Add 10% to cash (3 cards)
-- Currency -10%: Subtract 10% from cash (3 cards)
-
-### Investor Mode Limits (Shorting)
-- Short: 1,000 - 12,000 shares per stock
-- Maximum shorting per stock across all players: 12,000 shares
-- Cannot short stocks you own
-- Settlement: End of market year after currency cards
-
-### Strategist Mode Limits (Options/Dividends/Buybacks)
-- Options: Maximum 20% of shares (40,000) per stock
-- Option Premium: 10% (Chairman can adjust ±5%)
-- Director Dividend: Up to $10/share
-- Chairman Dividend: Up to $20/share
-- Buyback Price Increase: +$5 per 10,000 shares
 
 ---
 
@@ -843,14 +690,4 @@ In case of tie: Player with the most cash wins.
 
 ---
 
-## Game Mode Progression
-
-**🎯 Trader Mode** → Learn fundamentals  
-**📊 Investor Mode** → Add shorting strategies  
-**👔 Strategist Mode** → Master options, dividends, and buybacks  
-**🏆 Tycoon Mode** → Coming soon  
-**💎 Mogul Mode** → Coming soon  
-
----
-
-*Document created by experienced players. Start with Trader Mode to learn the fundamentals, progress to Investor Mode to add shorting, then master Strategist Mode for complete strategic depth. Tycoon and Mogul modes will be added in future updates.*
+*Complete rules for Stock Market Tycoon with Standard (2-6 players) and Extended (7-12 players) variants. Choose the variant that best fits your group size!*

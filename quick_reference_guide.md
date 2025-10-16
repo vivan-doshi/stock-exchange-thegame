@@ -1,25 +1,46 @@
 # Stock Market Tycoon - Quick Reference Guide
 
-## Game Setup
-- **Players:** 2-6
-- **Starting Capital:** $600,000
-- **Rounds:** 10 market years
-- **Transactions per Round:** Maximum 3
+## Choose Your Variant
+
+### Standard Variant (2-6 Players)
+- **Deck:** 108 cards
+- **Capital:** $600,000
+- **Shares:** 200,000 per stock
+- **Director:** 50,000 shares (25%)
+- **Chairman:** 100,000 shares (50%)
+
+### Extended Variant (7-12 Players)
+- **Deck:** 216 cards (2x)
+- **Capital:** $450,000
+- **Shares:** 300,000 per stock
+- **Director:** 60,000 shares (20%)
+- **Chairman:** 120,000 shares (40%)
 
 ---
 
 ## The Six Companies
 
-| Company | Sector | Price | Volatility | Cards |
-|---------|--------|-------|------------|-------|
-| Atlas Bank | Banking | $20 | Low | 4 |
-| Titan Steel | Manufacturing | $25 | Med-Low | 6 |
-| Global Industries | Conglomerate | $45 | Medium | 6 |
-| Omega Energy | Energy | $55 | Med-High | 8 |
-| VitalCare Pharma | Healthcare | $75 | High | 10 |
-| NovaTech | Technology | $80 | Very High | 12 |
+### Standard Variant (2-6 Players)
 
-**All companies:** 200,000 shares max
+| Company | Sector | Price | Volatility | Cards | Max Shares |
+|---------|--------|-------|------------|-------|------------|
+| Atlas Bank | Banking | $20 | Low | 4 | 200,000 |
+| Titan Steel | Manufacturing | $25 | Med-Low | 6 | 200,000 |
+| Global Industries | Conglomerate | $45 | Medium | 6 | 200,000 |
+| Omega Energy | Energy | $55 | Med-High | 8 | 200,000 |
+| VitalCare Pharma | Healthcare | $75 | High | 10 | 200,000 |
+| NovaTech | Technology | $80 | Very High | 12 | 200,000 |
+
+### Extended Variant (7-12 Players)
+
+| Company | Sector | Price | Volatility | Cards | Max Shares |
+|---------|--------|-------|------------|-------|------------|
+| Atlas Bank | Banking | $20 | Low | 4 | 300,000 |
+| Titan Steel | Manufacturing | $25 | Med-Low | 6 | 300,000 |
+| Global Industries | Conglomerate | $45 | Medium | 6 | 300,000 |
+| Omega Energy | Energy | $55 | Med-High | 8 | 300,000 |
+| VitalCare Pharma | Healthcare | $75 | High | 10 | 300,000 |
+| NovaTech | Technology | $80 | Very High | 12 | 300,000 |
 
 ---
 
@@ -34,7 +55,7 @@
 - ✓ All Trader actions
 - ✓ Short shares (1,000-12,000)
 
-### 👔 Strategist Mode (Level 3+)
+### 💼 Strategist Mode (Level 3+)
 - ✓ All Investor actions
 - ✓ Buy options (calls/puts)
 - ✓ Issue dividend (Director/Chairman)
@@ -44,11 +65,25 @@
 
 ## Ownership Powers
 
-### Director (25% = 50,000 shares)
+### Standard Variant (2-6 Players)
+
+**Director (25% = 50,000 shares)**
 - Remove 1 of YOUR OWN cards from price tally
 - **Strategist Mode:** Issue dividend up to $10/share
 
-### Chairman (50% = 100,000 shares)
+**Chairman (50% = 100,000 shares)**
+- Remove 1 of ANY PLAYER'S card from price tally
+- **Strategist Mode:** Set option premiums (5%, 10%, 15%)
+- **Strategist Mode:** Issue dividend up to $20/share
+- **Strategist Mode:** Announce buybacks
+
+### Extended Variant (7-12 Players)
+
+**Director (20% = 60,000 shares)**
+- Remove 1 of YOUR OWN cards from price tally
+- **Strategist Mode:** Issue dividend up to $10/share
+
+**Chairman (40% = 120,000 shares)**
 - Remove 1 of ANY PLAYER'S card from price tally
 - **Strategist Mode:** Set option premiums (5%, 10%, 15%)
 - **Strategist Mode:** Issue dividend up to $20/share
@@ -56,16 +91,27 @@
 
 ---
 
-## Special Cards (All Modes)
+## Special Cards
 
-| Card | Effect | Count | When Used |
-|------|--------|-------|-----------|
-| Loan Stocks Matured | Get $100,000 | 2 | Transaction |
-| Debenture | Face value if stock = $0 | 2 | Transaction |
-| Rights Issued | Buy 1 per 2 owned @ $10 | 2 | Transaction |
-| Share Suspended | Reset to last year's price | 2 | Year-end |
-| Currency +10% | Add 10% to cash | 3 | Year-end |
-| Currency -10% | Subtract 10% from cash | 3 | Year-end |
+### Standard Variant
+| Card | Effect | Count |
+|------|--------|-------|
+| Loan Stocks Matured | Get $100,000 | 2 |
+| Debenture | Face value if stock = $0 | 2 |
+| Rights Issued | Buy 1 per 2 owned @ $10 | 2 |
+| Share Suspended | Reset to last year's price | 2 |
+| Currency +10% | Add 10% to cash | 3 |
+| Currency -10% | Subtract 10% from cash | 3 |
+
+### Extended Variant
+| Card | Effect | Count |
+|------|--------|-------|
+| Loan Stocks Matured | Get $100,000 | 4 |
+| Debenture | Face value if stock = $0 | 4 |
+| Rights Issued | Buy 1 per 2 owned @ $10 | 4 |
+| Share Suspended | Reset to last year's price | 4 |
+| Currency +10% | Add 10% to cash | 6 |
+| Currency -10% | Subtract 10% from cash | 6 |
 
 ---
 
@@ -81,60 +127,17 @@
 
 ---
 
-## End of Market Year Sequence
-
-1. ✓ Reveal price cards (turn order)
-2. ✓ Calculate new stock prices
-3. ✓ Apply Share Suspended cards
-4. ✓ Apply Currency ±10% cards
-5. ✓ **Investor Mode:** Settle shorts
-6. ✓ **Strategist Mode:** Exercise options
-7. ✓ Rotate dealer, shuffle, deal new cards
-
----
-
-## Investor Mode: Shorting
-
-**How it works:** Bet that stock price will decrease
-
-**Limits:**
-- 1,000 - 12,000 shares per stock per player
-- Max 12,000 shares shorted per stock (all players)
-- CANNOT short stocks you own
-
-**Settlement (Year-end):**
-- Price decreased? Bank pays you
-- Price increased? You pay bank
-
-**Example:**
-- Short 10,000 @ $60
-- Price drops to $40: Receive $200,000
-- Price rises to $80: Pay $200,000
-
----
-
 ## Strategist Mode: Options
 
-**Call Option:** Right to BUY at strike price
+**Availability:**
+- **Standard:** Max 40,000 shares (20% of 200k) per stock
+- **Extended:** Max 60,000 shares (20% of 300k) per stock
+
+**Call Option:** Right to BUY at strike price  
 **Put Option:** Right to SELL at strike price
 
-**Rules:**
-- Premium: 10% (Chairman adjusts ±5%)
-- Max 40,000 shares under options per stock
-- Exercise at year-end only
-- Max loss = premium paid
-
-**Call Example:**
-- Stock @ $80, buy call for 5,000 shares
-- Premium: $40,000
-- Year-end @ $120: Profit $160,000
-- Year-end @ $60: Lose $40,000 (premium)
-
-**Put Example:**
-- Stock @ $75, buy put for 5,000 shares
-- Premium: $37,500
-- Year-end @ $40: Profit $137,500
-- Year-end @ $100: Lose $37,500 (premium)
+**Premium:** 10% (Chairman adjusts ±5%)  
+**Max loss:** Premium paid only
 
 **Options DO NOT:**
 - Count for Director/Chairman status
@@ -153,64 +156,48 @@
 - All shareholders paid immediately
 - Stock price DROPS by dividend amount
 
-**Example:**
-- Stock @ $60, Chairman issues $15 dividend
-- You own 100,000 shares
-- You receive: $1,500,000
-- Stock drops to: $45
-
 ---
 
 ## Strategist Mode: Buybacks
 
 **Chairman Only**
 
-**How it works:**
-1. Chairman announces: # shares + price
-2. Players sell in turn order (clockwise from Chairman)
-3. First-come, first-served until limit
-4. Shares permanently retired
-5. Stock price rises $5 per 10,000 bought back
-
-**Example:**
-- Chairman announces: 20,000 @ $60
-- Bob sells 8,000 (gets $480,000)
-- Carol sells 12,000 (gets $720,000) - LIMIT HIT
-- David cannot sell
-- Stock price rises: $10 (20k shares)
+**Effect:**
+1. Players sell in turn order
+2. Shares permanently retired
+3. Stock price rises $5 per 10,000 bought back
 
 ---
 
-## Key Strategy Tips
+## Key Strategy Tips by Variant
 
-### Early Game (Rounds 1-3)
-- Buy volatile stocks cheap (NovaTech, VitalCare Pharma)
-- Aim for Director status (25%)
-- Read your cards carefully
+### Standard Variant (2-6 Players)
+- Focus on 1-2 stocks for control
+- Director at $750k-$4M investment (50k shares)
+- Chairman at $1.5M-$8M investment (100k shares)
+- More achievable ownership thresholds
 
-### Mid Game (Rounds 4-7)
-- Push for Chairman (50%)
-- Diversify carefully
-- Watch competitor positions
-- Set up Rights Issued plays
-
-### Late Game (Rounds 8-10)
-- Lock in profits
-- Manage cash vs investment (Currency cards!)
-- Use Share Suspended strategically
-- **Strategist:** Extract value via dividends
+### Extended Variant (7-12 Players)
+- FIERCE competition for control
+- Director at $900k-$4.8M investment (60k shares)
+- Chairman at $1.8M-$9.6M investment (120k shares)
+- Lower starting capital = be conservative early
+- More special cards in play = higher variance
+- Rights Issued MORE valuable (cheap shares)
 
 ---
 
-## Common Mistakes to Avoid
+## Variant Comparison Table
 
-❌ Buying without checking card sum  
-❌ Ignoring Currency cards (keep cash if +10%, invest if -10%)  
-❌ Over-diversifying (no control power)  
-❌ Forgetting minimum 1,000 shares  
-❌ Missing Rights Issued setups  
-❌ **Investor:** Shorting stocks you own  
-❌ **Strategist:** Buying options when you need control  
+| Feature | Standard (2-6) | Extended (7-12) |
+|---------|----------------|-----------------|
+| Starting Capital | $600,000 | $450,000 |
+| Deck Size | 108 cards | 216 cards |
+| Shares per Stock | 200,000 | 300,000 |
+| Director Shares | 50,000 (25%) | 60,000 (20%) |
+| Chairman Shares | 100,000 (50%) | 120,000 (40%) |
+| Options Max | 40,000/stock | 60,000/stock |
+| Special Cards Total | 14 | 28 |
 
 ---
 
@@ -227,10 +214,10 @@ Tie? Most cash wins.
 
 - 🎯 **Trader Mode:** Start here (unlocked)
 - 📊 **Investor Mode:** Complete 3 Trader games
-- 👔 **Strategist Mode:** Win 2 Investor games
+- 💼 **Strategist Mode:** Win 2 Investor games
 - 🏆 **Tycoon Mode:** Coming soon
 - 💎 **Mogul Mode:** Coming soon
 
 ---
 
-*Quick reference for Stock Market Tycoon. Keep this handy during gameplay!*
+*Quick reference for Stock Market Tycoon with Standard and Extended variants. Keep handy during gameplay!*

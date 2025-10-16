@@ -1,6 +1,6 @@
 # Stock Market Tycoon - Game Mode Specifications
 
-Detailed breakdown of all five game modes with unlock conditions, new features, and design philosophy.
+Detailed breakdown of all five game modes with unlock conditions, new features, and design philosophy. All modes support both Standard (2-6 players) and Extended (7-12 players) variants.
 
 ---
 
@@ -13,6 +13,30 @@ Stock Market Tycoon uses a **progressive difficulty system** where each mode bui
 2. **Meaningful progression** - Each unlock feels significant
 3. **Optional complexity** - Players can stay at comfortable level
 4. **Replayability** - Each mode offers different strategic depth
+5. **Scalable** - Works for both 2-6 and 7-12 player variants
+
+---
+
+## Game Variants Overview
+
+Before diving into modes, understand the two player count variants:
+
+### Standard Variant (2-6 Players)
+- Original balanced experience
+- $600,000 starting capital
+- 200,000 shares per stock
+- Director: 50,000 shares (25%)
+- Chairman: 100,000 shares (50%)
+
+### Extended Variant (7-12 Players)
+- Large group gameplay
+- $450,000 starting capital
+- 300,000 shares per stock
+- Director: 60,000 shares (20%)
+- Chairman: 120,000 shares (40%)
+- Double deck (2x all cards)
+
+**Note:** All game modes work with both variants. The variant affects player count and scaling, while the mode affects available mechanics.
 
 ---
 
@@ -44,8 +68,9 @@ Stock Market Tycoon uses a **progressive difficulty system** where each mode bui
 - Currency -10% (subtract from cash)
 
 ✅ **Ownership Powers**
-- Director (25%): Remove 1 own card
-- Chairman (50%): Remove 1 any card
+- Director: Remove 1 own card
+- Chairman: Remove 1 any card
+- *Thresholds vary by variant*
 
 ✅ **Turn Structure**
 - 10 rounds (market years)
@@ -58,9 +83,25 @@ Stock Market Tycoon uses a **progressive difficulty system** where each mode bui
   - Buy condition rules
   - Turn structure
   - Special card basics
+  - Variant-specific thresholds
 - **Round 3:** First opportunity for Director status
 - **Round 5:** Mid-game check-in with tips
 - **Round 10:** End-game scoring explanation
+
+### Variant-Specific Considerations
+
+**Standard Variant (2-6 Players):**
+- Director achievable by Round 2-3
+- Chairman achievable by Round 4-5
+- More predictable with fewer players
+- Focus on 1-2 stocks for control
+
+**Extended Variant (7-12 Players):**
+- Director achievable by Round 3-5
+- Chairman achievable by Round 6-8
+- More chaotic with many players
+- Harder to achieve control
+- More special cards appear
 
 ### Learning Objectives
 By completing Trader Mode, players should understand:
@@ -69,13 +110,14 @@ By completing Trader Mode, players should understand:
 3. When to buy vs. sell
 4. How special cards affect gameplay
 5. Basic risk management
+6. How player count affects competition
 
 ### Win Condition
 Highest net worth (cash + stock value) after 10 rounds
 
 ### Estimated Playtime
-- Tutorial game: 20-25 minutes
-- Regular game: 15-20 minutes
+- **Standard Variant:** 15-20 minutes (tutorial: 20-25 minutes)
+- **Extended Variant:** 25-35 minutes (tutorial: 30-40 minutes)
 
 ### Unlock Condition
 **None** - Available immediately
@@ -85,7 +127,7 @@ Highest net worth (cash + stock value) after 10 rounds
 ## 📊 Level 2: Investor Mode
 
 ### Status
-**Locked until:** Complete 3 games in Trader Mode (wins not required)
+**Locked until:** Complete 3 games in Trader Mode (wins not required, any variant)
 
 ### Unlock Philosophy
 We require **3 completions** (not wins) because:
@@ -93,6 +135,7 @@ We require **3 completions** (not wins) because:
 - Doesn't frustrate new players with difficulty barriers
 - 3 games = exposure to different market conditions
 - Allows learning from losses
+- Works across both variants
 
 ### Target Audience
 - Players who completed 3+ Trader games
@@ -126,10 +169,25 @@ We require **3 completions** (not wins) because:
 - Rewards reading market conditions
 - Introduces concept of betting against stocks
 
-#### Tutorial Addition
+### Variant-Specific Considerations
+
+**Standard Variant (2-6 Players):**
+- Shorting is powerful but risky
+- Fewer players = easier to predict movements
+- 12,000 share limit is significant (6% of supply)
+
+**Extended Variant (7-12 Players):**
+- Shorting becomes MORE valuable
+- More players = more unpredictable movements
+- 12,000 share limit less significant (4% of supply)
+- More competition for short positions
+- Higher chaos = better opportunities for shorts
+
+### Tutorial Addition
 - **First Investor game:** Pop-up explaining shorting when first available
 - **Example scenarios:** Show profitable and losing short positions
 - **Warning system:** Alert players to potential bankruptcy
+- **Variant-specific tips:** Adjusted for player count
 
 ### Learning Objectives
 By mastering Investor Mode, players should understand:
@@ -138,23 +196,25 @@ By mastering Investor Mode, players should understand:
 3. When to short vs. when to buy
 4. Bankruptcy risk management
 5. Counter-strategies against opponents
+6. How player count affects shorting viability
 
 ### Strategic Depth Increase
 - **Trader Mode:** 1-dimensional (buy low, sell high)
 - **Investor Mode:** 2-dimensional (long AND short strategies)
 
 ### Estimated Playtime
-Same as Trader Mode (15-20 minutes)
+- **Standard Variant:** 15-20 minutes
+- **Extended Variant:** 25-35 minutes
 
 ### Unlock Condition
-**Win 2 games in Investor Mode** to unlock Strategist Mode
+**Win 2 games in Investor Mode** (any variant) to unlock Strategist Mode
 
 ---
 
-## 👔 Level 3: Strategist Mode
+## 💼 Level 3: Strategist Mode
 
 ### Status
-**Locked until:** Win 2 games in Investor Mode
+**Locked until:** Win 2 games in Investor Mode (any variant)
 
 ### Unlock Philosophy
 We require **2 wins** (not just completions) because:
@@ -181,7 +241,8 @@ We require **2 wins** (not just completions) because:
 
 **Rules:**
 - Premium: 10% of strike value (Chairman adjusts ±5%)
-- Max 40,000 shares under options per stock (20%)
+- **Standard Variant:** Max 40,000 shares under options per stock (20%)
+- **Extended Variant:** Max 60,000 shares under options per stock (20%)
 - Exercise at year-end only (after Currency cards)
 - Max loss = premium paid
 
@@ -201,8 +262,8 @@ We require **2 wins** (not just completions) because:
 **What it is:** Cash payments to shareholders
 
 **Who Can Issue:**
-- **Director:** Up to $10/share
-- **Chairman:** Up to $20/share
+- **Director:** Up to $10/share (thresholds vary by variant)
+- **Chairman:** Up to $20/share (thresholds vary by variant)
 
 **Rules:**
 - Uses 1 transaction to declare
@@ -238,11 +299,30 @@ We require **2 wins** (not just completions) because:
 - Deploy excess cash
 - Timing matters (turn order advantage)
 
-#### Tutorial Addition
+### Variant-Specific Considerations
+
+**Standard Variant (2-6 Players):**
+- Options limit: 40,000 shares per stock
+- Control easier to achieve = dividends more accessible
+- Buybacks effective for consolidation
+- Fewer players = more predictable outcomes
+- Chairman premium manipulation more impactful
+
+**Extended Variant (7-12 Players):**
+- Options limit: 60,000 shares per stock
+- Options become MORE attractive than ownership
+- Control MUCH harder = dividends rare but powerful
+- Buybacks critical for maintaining control
+- More players = higher options activity
+- Chairman premium affects more players
+- More competition = more strategic depth
+
+### Tutorial Addition
 - **First Strategist game:** Multi-step tutorial:
   1. Options explained with examples
   2. Dividends walkthrough
   3. Buyback demonstration
+  4. Variant-specific tips
 - **Tooltips:** Available throughout for complex actions
 - **Calculator:** Built-in profit/loss calculator for options
 
@@ -253,13 +333,15 @@ By mastering Strategist Mode, players should understand:
 3. Chairman premium manipulation
 4. Complex multi-layered strategies
 5. Portfolio theory basics
+6. How player count affects advanced strategies
 
 ### Strategic Depth Increase
 - **Investor Mode:** 2-dimensional (long + short)
 - **Strategist Mode:** 5-dimensional (long + short + calls + puts + corporate actions)
 
 ### Estimated Playtime
-20-25 minutes (longer due to complexity)
+- **Standard Variant:** 20-25 minutes (longer due to complexity)
+- **Extended Variant:** 30-40 minutes (more players + complexity)
 
 ### Unlock Condition
 **Complete achievements in Strategist Mode** to unlock Tycoon Mode (when released)
@@ -304,6 +386,7 @@ By mastering Strategist Mode, players should understand:
 - Introduce forward-looking mechanics
 - Create more player interaction
 - Maintain game balance
+- **Works with both variants**
 
 ### Unlock Condition
 TBD - Likely requires Strategist Mode achievements
@@ -348,6 +431,7 @@ TBD - Likely requires Strategist Mode achievements
 - Multi-layered strategy
 - High replayability
 - For expert players only
+- **Scalable to both variants**
 
 ### Unlock Condition
 TBD - Likely requires Tycoon Mode mastery
@@ -361,6 +445,7 @@ TBD - Likely requires Tycoon Mode mastery
 | **Buy/Sell** | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **Special Cards** | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **Director/Chairman** | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Both Variants** | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **Shorting** | ❌ | ✅ | ✅ | ✅ | ✅ |
 | **Options** | ❌ | ❌ | ✅ | ✅ | ✅ |
 | **Dividends** | ❌ | ❌ | ✅ | ✅ | ✅ |
@@ -375,42 +460,46 @@ TBD - Likely requires Tycoon Mode mastery
 
 ---
 
-## Difficulty Curve
+## Variant Impact on Modes
 
-```
-Complexity
-    ^
-    |                                           💎 Mogul
-    |                                    🏆 Tycoon
-    |                          👔 Strategist
-    |               📊 Investor
-    |     🎯 Trader
-    |______________________________________________> Time/Experience
-```
+### Trader Mode
+- **Standard:** Learn fundamentals, achievable control
+- **Extended:** Learn fundamentals, competitive control
+
+### Investor Mode
+- **Standard:** Strategic shorting, moderate competition
+- **Extended:** Chaotic shorting, high competition
+
+### Strategist Mode
+- **Standard:** Corporate control focus, dividends common
+- **Extended:** Options focus, control rare but powerful
 
 ---
 
 ## Achievement System Ideas
 
-### Trader Mode Achievements
+### Trader Mode Achievements (Both Variants)
 - **First Blood:** Complete first game
 - **Trader Pro:** Win 3 games
 - **Director's Chair:** Become Director
 - **Power Player:** Become Chairman
 - **Perfect Storm:** Win with all positive cards one round
+- **Extended Warrior:** Win with 10+ players (Extended only)
 
-### Investor Mode Achievements
+### Investor Mode Achievements (Both Variants)
 - **Short Seller:** Profit from first short
 - **Bear Market:** Profit $100k+ from shorting in one game
 - **Risk Taker:** Short while owning other stocks worth $500k+
 - **Narrow Escape:** Avoid bankruptcy by less than $50k
+- **Chaos Master:** Win with 10+ players (Extended only)
 
-### Strategist Mode Achievements
+### Strategist Mode Achievements (Both Variants)
 - **Options Master:** Exercise 10 profitable options
 - **Dividend King:** Issue $500k+ dividends in one game
 - **Corporate Raider:** Use buyback to steal Chairmanship
 - **Market Manipulator:** Adjust option premiums 5+ times
 - **Triple Threat:** Use options, dividends, AND buybacks in one game
+- **Extended Mogul:** Win Strategist with 10+ players (Extended only)
 
 ---
 
@@ -422,42 +511,49 @@ Complexity
 3. Complexity should add **depth**, not just **complication**
 4. New players in Trader should have fun
 5. Experts in Mogul should still find challenge
+6. **Both variants should be balanced**
 
 ### Tested Balance Points
 - **Shorting:** 12,000 share cap prevents game-breaking positions
-- **Options:** 20% cap ensures stocks remain primary
+- **Options (Standard):** 40,000 share (20%) cap ensures stocks remain primary
+- **Options (Extended):** 60,000 share (20%) cap maintains same proportion
 - **Dividends:** Director/Chairman split prevents one power from dominating
 - **Buybacks:** $5 price increase per 10k prevents inflation
 
-### Future Balance Testing
-- Tycoon and Mogul will require extensive playtesting
-- User feedback will guide feature priority
-- Some planned features may be cut if imbalanced
+### Extended Variant Balance
+- Lower starting capital ($450k) creates more scarcity
+- Lower thresholds (20%/40%) keep control achievable
+- More shares (300k) prevent market exhaustion
+- Double deck prevents card counting
 
 ---
 
 ## Progression Tracking
 
 ### Suggested Metrics to Track
-- Games played per mode
-- Games won per mode
+- Games played per mode (by variant)
+- Games won per mode (by variant)
 - Favorite company to invest in
-- Highest net worth achieved
+- Highest net worth achieved (by variant)
 - Biggest single-round gain/loss
-- Times achieved Director/Chairman
+- Times achieved Director/Chairman (by variant)
 - Bankruptcy count (Investor+)
 - Options exercised profitably (Strategist+)
+- Largest game (player count)
 
 ### Unlock Progress Display
 ```
 🎯 Trader Mode: ✅ UNLOCKED
-   └─ Games completed: 5/3 ✅
+   ├── Games completed (Standard): 5/3 ✅
+   └── Games completed (Extended): 2/3 (In Progress)
    
 📊 Investor Mode: ✅ UNLOCKED  
-   └─ Games won: 3/2 ✅
+   ├── Games won (Standard): 3/2 ✅
+   └── Games won (Extended): 1/2 (In Progress)
    
-👔 Strategist Mode: ✅ UNLOCKED
-   └─ Ready for Tycoon! (Coming soon)
+💼 Strategist Mode: ✅ UNLOCKED
+   ├── Ready for Tycoon!
+   └── Extended games won: 1
    
 🏆 Tycoon Mode: 🔒 Coming Soon
    
@@ -466,4 +562,4 @@ Complexity
 
 ---
 
-*Game Mode Specifications for Stock Market Tycoon. This document defines the progression system and planned features for all five difficulty levels.*
+*Game Mode Specifications for Stock Market Tycoon. This document defines the progression system and planned features for all five difficulty levels, supporting both Standard (2-6) and Extended (7-12) player variants.*

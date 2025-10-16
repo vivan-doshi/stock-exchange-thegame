@@ -1,6 +1,6 @@
 # Stock Market Tycoon - Technical Specifications
 
-Technical architecture, database design, and implementation guidelines for the webapp.
+Technical architecture, database design, and implementation guidelines for the webapp with support for both Standard (2-6 players) and Extended (7-12 players) variants.
 
 ---
 
@@ -74,6 +74,7 @@ CREATE TABLE users (
     
     -- Preferences
     preferred_mode VARCHAR(20) DEFAULT 'trader',
+    preferred_variant VARCHAR(20) DEFAULT 'standard', -- 'standard' or 'extended'
     avatar_url VARCHAR(255),
     sound_enabled BOOLEAN DEFAULT TRUE,
     animations_enabled BOOLEAN DEFAULT TRUE
@@ -85,6 +86,7 @@ CREATE TABLE users (
 CREATE TABLE games (
     game_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     game_mode VARCHAR(20) NOT NULL, -- 'trader', 'investor', 'strategist'
+    game_variant VARCHAR(20) NOT NULL, -- 'standard' (2-6), 'extended' (7-12)
     status VARCHAR(20) NOT NULL, -- 'waiting', 'in_progress', 'completed', 'abandoned'
     
     created_at TIMESTAMP DEFAULT NOW(),
@@ -99,11 +101,18 @@ CREATE TABLE games (
     player_count INTEGER NOT NULL,
     rounds_total INTEGER DEFAULT 10,
     
+    -- Variant-specific settings
+    starting_capital INTEGER, -- 600000 for standard, 450000 for extended
+    max_shares_per_stock INTEGER, -- 200000 for standard, 300000 for extended
+    director_threshold INTEGER, -- 50000 for standard, 60000 for extended
+    chairman_threshold INTEGER, -- 100000 for standard, 120000 for extended
+    deck_multiplier INTEGER, -- 1 for standard, 2 for extended
+    
     winner_user_id UUID REFERENCES users(user_id),
     
     -- Game State (JSON for flexibility)
     stock_prices JSONB, -- Current prices for all 6 stocks
-    share_supply JSONB, -- Available shares per stock (for buybacks)
+    share_supply JSONB, -- Available shares per stock (affected by buybacks)
     options_available JSONB -- Options contracts in play (Strategist mode)
 );
 ```
@@ -115,10 +124,10 @@ CREATE TABLE game_players (
     game_id UUID REFERENCES games(game_id) ON DELETE CASCADE,
     user_id UUID REFERENCES users(user_id),
     
-    player_position INTEGER NOT NULL, -- Turn order (1-6)
+    player_position INTEGER NOT NULL, -- Turn order (1-12 for extended)
     
     -- Current State
-    cash_balance INTEGER NOT NULL DEFAULT 600000,
+    cash_balance INTEGER NOT NULL, -- 600000 or 450000 depending on variant
     net_worth INTEGER,
     is_bankrupt BOOLEAN DEFAULT FALSE,
     
@@ -180,6 +189,39 @@ CREATE TABLE transactions (
 );
 ```
 
+### Game Variants Table (Configuration)
+```sql
+CREATE TABLE game_variants (
+    variant_name VARCHAR(20) PRIMARY KEY, -- 'standard' or 'extended'
+    display_name VARCHAR(50),
+    description TEXT,
+    
+    min_players INTEGER,
+    max_players INTEGER,
+    
+    starting_capital INTEGER,
+    max_shares_per_stock INTEGER,
+    director_threshold_shares INTEGER,
+    director_threshold_percent DECIMAL(5,2),
+    chairman_threshold_shares INTEGER,
+    chairman_threshold_percent DECIMAL(5,2),
+    
+    deck_multiplier INTEGER,
+    cards_per_player_approx INTEGER,
+    
+    options_limit_per_stock INTEGER, -- Strategist mode
+    
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+-- Insert default variants
+INSERT INTO game_variants VALUES
+('standard', 'Standard (2-6 Players)', 'Traditional gameplay with original rules', 
+ 2, 6, 600000, 200000, 50000, 25.00, 100000, 50.00, 1, 10, 40000, TRUE),
+('extended', 'Extended (7-12 Players)', 'Large group variant with adjusted thresholds',
+ 7, 12, 450000, 300000, 60000, 20.00, 120000, 40.00, 2, 9, 60000, TRUE);
+```
+
 ### Achievements Table
 ```sql
 CREATE TABLE achievements (
@@ -187,6 +229,7 @@ CREATE TABLE achievements (
     name VARCHAR(100) UNIQUE NOT NULL,
     description TEXT,
     mode VARCHAR(20), -- Which mode this applies to
+    variant VARCHAR(20), -- NULL = applies to both, 'standard', 'extended'
     icon_url VARCHAR(255),
     rarity VARCHAR(20) -- 'common', 'rare', 'epic', 'legendary'
 );
@@ -197,23 +240,6 @@ CREATE TABLE user_achievements (
     unlocked_at TIMESTAMP DEFAULT NOW(),
     PRIMARY KEY (user_id, achievement_id)
 );
-```
-
-### Leaderboards (Materialized View)
-```sql
-CREATE MATERIALIZED VIEW leaderboard AS
-SELECT 
-    user_id,
-    username,
-    games_won_trader + games_won_investor + games_won_strategist as total_wins,
-    highest_net_worth,
-    games_played_trader + games_played_investor + games_played_strategist as total_games
-FROM users
-ORDER BY total_wins DESC, highest_net_worth DESC
-LIMIT 100;
-
--- Refresh periodically
-REFRESH MATERIALIZED VIEW leaderboard;
 ```
 
 ---
@@ -234,15 +260,17 @@ GET    /api/users/:userId
 PATCH  /api/users/:userId
 GET    /api/users/:userId/stats
 GET    /api/users/:userId/achievements
+PATCH  /api/users/:userId/preferences  -- Set preferred variant
 ```
 
 ### Game Lobby
 ```
-POST   /api/games/create
-GET    /api/games/available
+POST   /api/games/create                -- Specify variant in body
+GET    /api/games/available              -- Filter by variant
 POST   /api/games/:gameId/join
 DELETE /api/games/:gameId/leave
 POST   /api/games/:gameId/start
+GET    /api/games/variants               -- Get available variants and their rules
 ```
 
 ### Game Actions
@@ -263,13 +291,14 @@ POST   /api/games/:gameId/actions/end-turn
 GET    /api/games/:gameId/history
 GET    /api/games/:gameId/players
 POST   /api/games/:gameId/end-round
+GET    /api/games/:gameId/variant        -- Get current game's variant rules
 ```
 
 ### Leaderboards
 ```
-GET    /api/leaderboard/global
-GET    /api/leaderboard/friends
-GET    /api/leaderboard/weekly
+GET    /api/leaderboard/global?variant=standard|extended
+GET    /api/leaderboard/friends?variant=standard|extended
+GET    /api/leaderboard/weekly?variant=standard|extended
 ```
 
 ---
@@ -281,6 +310,8 @@ GET    /api/leaderboard/weekly
 interface GameState {
   gameId: string;
   mode: 'trader' | 'investor' | 'strategist';
+  variant: 'standard' | 'extended';
+  variantConfig: VariantConfig;
   status: 'waiting' | 'in_progress' | 'completed';
   
   currentRound: number;
@@ -303,11 +334,25 @@ interface GameState {
   transactionLog: Transaction[];
 }
 
+interface VariantConfig {
+  name: 'standard' | 'extended';
+  minPlayers: number;
+  maxPlayers: number;
+  startingCapital: number;          // 600000 or 450000
+  maxSharesPerStock: number;        // 200000 or 300000
+  directorThresholdShares: number;  // 50000 or 60000
+  directorThresholdPercent: number; // 25 or 20
+  chairmanThresholdShares: number;  // 100000 or 120000
+  chairmanThresholdPercent: number; // 50 or 40
+  deckMultiplier: number;           // 1 or 2
+  optionsLimitPerStock: number;     // 40000 or 60000
+}
+
 interface Player {
   playerId: string;
   userId: string;
   username: string;
-  position: number; // Turn order
+  position: number; // Turn order (1-6 standard, 1-12 extended)
   
   cashBalance: number;
   stockHoldings: { [stock: string]: number };
@@ -316,7 +361,7 @@ interface Player {
   
   currentCards: Card[];
   
-  // Ownership status
+  // Ownership status (calculated based on variant)
   directorOf: string[]; // Stock symbols
   chairmanOf: string[]; // Stock symbols
   
@@ -339,6 +384,7 @@ interface Card {
   value: number; // Price change: -30 to +30
   type: 'price' | 'special';
   specialType?: 'loan' | 'debenture' | 'rights' | 'suspended' | 'currency_plus' | 'currency_minus';
+  deckNumber?: number; // 1 or 2 (for extended variant tracking)
 }
 ```
 
@@ -370,11 +416,13 @@ function canBuyStock(
 }
 ```
 
-### 2. Director/Chairman Calculator
+### 2. Director/Chairman Calculator (Variant-Aware)
 ```typescript
 function updateOwnershipStatus(gameState: GameState): void {
   const stocks = ['atlas_bank', 'titan_steel', 'global_industries', 
                   'omega_energy', 'vitalcare_pharma', 'novatech'];
+  
+  const config = gameState.variantConfig;
   
   stocks.forEach(stock => {
     const totalShares = gameState.shareSupply[stock];
@@ -390,16 +438,17 @@ function updateOwnershipStatus(gameState: GameState): void {
       p.directorOf = p.directorOf.filter(s => s !== stock);
     });
     
-    // Assign Chairman (50%+)
+    // Assign Chairman (threshold based on variant)
     const topOwner = ownership[0];
-    if (topOwner.percentage >= 50) {
+    if (topOwner.shares >= config.chairmanThresholdShares) {
       const player = gameState.players.find(p => p.playerId === topOwner.playerId);
       player.chairmanOf.push(stock);
     }
     
-    // Assign Director (25%+, but not Chairman)
+    // Assign Director (threshold based on variant, but not Chairman)
     ownership.forEach(owner => {
-      if (owner.percentage >= 25 && owner.percentage < 50) {
+      if (owner.shares >= config.directorThresholdShares && 
+          owner.shares < config.chairmanThresholdShares) {
         const player = gameState.players.find(p => p.playerId === owner.playerId);
         if (!player.chairmanOf.includes(stock)) {
           player.directorOf.push(stock);
@@ -410,120 +459,98 @@ function updateOwnershipStatus(gameState: GameState): void {
 }
 ```
 
-### 3. End of Round Price Calculation
+### 3. Deck Initialization (Variant-Aware)
 ```typescript
-function calculateNewPrices(gameState: GameState): void {
-  const stocks = Object.keys(gameState.stockPrices);
+function initializeDeck(variant: 'standard' | 'extended'): Card[] {
+  const baseDeck: Card[] = [];
   
-  stocks.forEach(stock => {
-    let priceChange = 0;
-    
-    // Collect all revealed cards for this stock
-    const allCards = gameState.players.flatMap(p => 
-      p.currentCards.filter(c => c.stock === stock && c.type === 'price')
-    );
-    
-    // Check for card suppressions (Director/Chairman powers)
-    // This is handled in a separate phase
-    
-    // Sum up price changes
-    priceChange = allCards.reduce((sum, card) => sum + card.value, 0);
-    
-    // Apply Share Suspended cards
-    const suspendedCards = gameState.players.flatMap(p =>
-      p.currentCards.filter(c => c.specialType === 'suspended' && c.stock === stock)
-    );
-    
-    if (suspendedCards.length > 0) {
-      // Reset to last round's price (suspend overrides everything)
-      const lastRoundPrice = gameState.priceHistory[gameState.currentRound - 2];
-      gameState.stockPrices[stock] = lastRoundPrice[stock];
-    } else {
-      // Apply normal price change
-      gameState.stockPrices[stock] = Math.max(0, gameState.stockPrices[stock] + priceChange);
+  // Price cards
+  const priceCardDefinitions = [
+    { stock: 'atlas_bank', values: [-10, -5, 5, 10] },
+    { stock: 'titan_steel', values: [-15, -10, -5, 5, 10, 15] },
+    { stock: 'global_industries', values: [-15, -10, -5, 5, 10, 15] },
+    { stock: 'omega_energy', values: [-20, -15, -10, -5, 5, 10, 15, 20] },
+    { stock: 'vitalcare_pharma', values: [-25, -20, -15, -10, -5, 5, 10, 15, 20, 25] },
+    { stock: 'novatech', values: [-30, -25, -20, -15, -10, -5, 5, 10, 15, 20, 25, 30] }
+  ];
+  
+  priceCardDefinitions.forEach(def => {
+    def.values.forEach(value => {
+      baseDeck.push({
+        cardId: generateCardId(),
+        stock: def.stock,
+        value: value,
+        type: 'price',
+        deckNumber: 1
+      });
+    });
+  });
+  
+  // Special cards
+  const specialCards = [
+    { type: 'loan', count: 2 },
+    { type: 'debenture', count: 2 },
+    { type: 'rights', count: 2 },
+    { type: 'suspended', count: 2 },
+    { type: 'currency_plus', count: 3 },
+    { type: 'currency_minus', count: 3 }
+  ];
+  
+  specialCards.forEach(special => {
+    for (let i = 0; i < special.count; i++) {
+      baseDeck.push({
+        cardId: generateCardId(),
+        stock: 'special',
+        value: 0,
+        type: 'special',
+        specialType: special.type,
+        deckNumber: 1
+      });
     }
   });
+  
+  // For extended variant, duplicate the deck
+  if (variant === 'extended') {
+    const duplicateDeck = baseDeck.map(card => ({
+      ...card,
+      cardId: generateCardId(),
+      deckNumber: 2
+    }));
+    return shuffle([...baseDeck, ...duplicateDeck]);
+  }
+  
+  return shuffle(baseDeck);
 }
 ```
 
-### 4. Net Worth Calculator
+### 4. Option Limits Validator (Variant-Aware)
 ```typescript
-function calculateNetWorth(player: Player, stockPrices: StockPrices): number {
-  let netWorth = player.cashBalance;
+function canBuyOption(
+  stock: string,
+  quantity: number,
+  gameState: GameState
+): { canBuy: boolean; reason?: string } {
+  const config = gameState.variantConfig;
   
-  // Add stock holdings value
-  Object.entries(player.stockHoldings).forEach(([stock, shares]) => {
-    netWorth += shares * stockPrices[stock];
-  });
+  // Calculate current options outstanding
+  const currentOptions = gameState.players.reduce((total, player) => {
+    if (!player.optionPositions) return total;
+    return total + player.optionPositions
+      .filter(opt => opt.stock === stock)
+      .reduce((sum, opt) => sum + opt.quantity, 0);
+  }, 0);
   
-  // Subtract short liabilities (Investor mode)
-  if (player.shortPositions) {
-    Object.entries(player.shortPositions).forEach(([stock, shares]) => {
-      // Short liability = shares * current_price
-      netWorth -= shares * stockPrices[stock];
-    });
+  const maxOptions = config.optionsLimitPerStock; // 40k or 60k
+  
+  if (currentOptions + quantity > maxOptions) {
+    return {
+      canBuy: false,
+      reason: `Maximum ${maxOptions} shares can be under options for ${stock}. Current: ${currentOptions}`
+    };
   }
   
-  // Add option values (Strategist mode) - simplified
-  if (player.optionPositions) {
-    player.optionPositions.forEach(option => {
-      const currentPrice = stockPrices[option.stock];
-      const strikePrice = option.strikePrice;
-      
-      if (option.type === 'call' && currentPrice > strikePrice) {
-        netWorth += (currentPrice - strikePrice) * option.quantity;
-      } else if (option.type === 'put' && currentPrice < strikePrice) {
-        netWorth += (strikePrice - currentPrice) * option.quantity;
-      }
-      // If option is out of money, it contributes 0 (already paid premium)
-    });
-  }
-  
-  return netWorth;
+  return { canBuy: true };
 }
-```
-
----
-
-## Real-Time Multiplayer
-
-### WebSocket Events
-
-**Client → Server:**
-```
-join_game
-leave_game
-ready_up
-take_action (buy, sell, etc.)
-chat_message
-```
-
-**Server → Client:**
-```
-game_state_update
-player_joined
-player_left
-turn_started
-action_taken
-round_ended
-game_ended
-chat_message
-error
-```
-
-### Event Flow Example
-```
-1. Player A clicks "Buy 5000 Titan Steel"
-   ↓
-2. Client sends: take_action {type: 'buy', stock: 'titan_steel', quantity: 5000}
-   ↓
-3. Server validates action
-   ↓
-4. Server updates game state
-   ↓
-5. Server broadcasts: action_taken {player: 'Player A', action: 'bought 5000 Titan Steel for $125,000'}
-   ↓
-6. All clients update UI
 ```
 
 ---
@@ -532,43 +559,40 @@ error
 
 ### Critical UI Elements
 
-1. **Stock Price Board**
+1. **Variant Selection (Lobby)**
+   - Prominent toggle: "Standard (2-6 Players)" vs "Extended (7-12 Players)"
+   - Show key differences in tooltip:
+     - Starting capital
+     - Ownership thresholds
+     - Deck size
+   - Visual indicators for which variant is active
+
+2. **Stock Price Board**
    - Real-time prices
    - Price change indicators (↑↓)
    - Volatility indicator
+   - **Variant-aware:** Show max shares available (200k vs 300k)
 
-2. **Player Portfolio Panel**
+3. **Player Portfolio Panel**
    - Cash balance (large, prominent)
    - Stock holdings (grid/list)
    - Net worth (calculated, updated)
-   - Ownership badges (Director/Chairman)
+   - **Variant-aware:** Ownership badges with thresholds
+     - Standard: "Director (25%)" / "Chairman (50%)"
+     - Extended: "Director (20%)" / "Chairman (40%)"
 
-3. **Card Hand**
-   - Current cards displayed
-   - Groupable by stock
-   - Sum calculator per stock
+4. **Ownership Progress Indicator**
+   - Visual progress bar showing % ownership
+   - Clearly mark Director and Chairman thresholds
+   - Different colors for Standard vs Extended
+   - Show exact share count needed
 
-4. **Action Panel**
-   - Buy/Sell buttons
-   - Quantity selector
-   - Mode-specific actions (Short, Options, etc.)
-   - Validation feedback
-
-5. **Transaction Log**
-   - Recent actions
-   - Price changes
-   - Special events
-
-6. **Game Progress**
-   - Round indicator (1/10)
-   - Transaction indicator (1/3)
-   - Turn indicator (whose turn)
-
-### Mobile Responsive
-- Stack panels vertically on mobile
-- Swipe gestures for cards
-- Bottom sheet for actions
-- Simplified transaction log
+5. **Game Info Panel**
+   - Display current variant prominently
+   - Show variant-specific rules:
+     - "Director: 60,000 shares (20%)"
+     - "Chairman: 120,000 shares (40%)"
+     - "Starting Capital: $450,000"
 
 ---
 
@@ -578,19 +602,28 @@ error
 - Buy condition logic
 - Price calculation
 - Net worth calculation
-- Ownership status updates
-- Card dealing algorithm
+- **Variant-specific:** Ownership status updates for both variants
+- Card dealing algorithm (1x and 2x decks)
 
 ### Integration Tests
-- Complete game flow (10 rounds)
-- Multiplayer interactions
+- Complete game flow (10 rounds) in Standard variant
+- Complete game flow (10 rounds) in Extended variant
+- 6-player Standard game
+- 12-player Extended game
 - Mode unlocks
 - Achievement triggers
 
 ### Load Tests
-- 100+ concurrent games
+- 100+ concurrent games (mixed variants)
 - Database query performance
 - WebSocket connection stability
+- **Critical:** Test with 12 simultaneous players in Extended variant
+
+### Balance Tests
+- Extended variant with 12 players - achievability of control
+- Starting capital appropriateness ($450k vs $600k)
+- Share availability (300k sufficient?)
+- Options limits (60k appropriate?)
 
 ---
 
@@ -601,12 +634,20 @@ error
 - **Action validation:** < 50ms
 - **Database queries:** < 200ms
 - **WebSocket latency:** < 150ms
+- **Extended variant:** Handle 12 players with same performance
 
 ### Caching Strategy
 - Game state in Redis (active games)
+- Variant configurations (rarely change)
 - Stock prices (frequently accessed)
 - User stats (read-heavy)
-- Leaderboards (updated periodically)
+- Leaderboards by variant (updated periodically)
+
+### Extended Variant Specific
+- More players = larger game state
+- Optimize Player array operations
+- Consider pagination for transaction logs (more transactions)
+- Efficient card dealing with 2x deck
 
 ---
 
@@ -614,36 +655,56 @@ error
 
 ### Critical Security Measures
 1. **Validate all actions server-side** - Never trust client
-2. **Prevent cheating:**
+2. **Variant validation:**
+   - Ensure player count matches variant
+   - Verify starting capital matches variant
+   - Check ownership thresholds match variant
+3. **Prevent cheating:**
    - Can't see other players' cards
    - Can't take actions out of turn
    - Can't modify cash/holdings directly
-3. **Rate limiting** on API endpoints
-4. **Input sanitization** for usernames, chat
-5. **HTTPS only** for production
-6. **Secure password hashing** (bcrypt)
+   - Can't change variant mid-game
+4. **Rate limiting** on API endpoints
+5. **Input sanitization** for usernames, chat
+
+---
+
+## Migration Strategy for Existing Users
+
+If launching Extended variant after Standard is live:
+
+```sql
+-- Add variant columns to existing games table
+ALTER TABLE games ADD COLUMN game_variant VARCHAR(20) DEFAULT 'standard';
+ALTER TABLE games ADD COLUMN starting_capital INTEGER DEFAULT 600000;
+ALTER TABLE games ADD COLUMN max_shares_per_stock INTEGER DEFAULT 200000;
+ALTER TABLE games ADD COLUMN director_threshold INTEGER DEFAULT 50000;
+ALTER TABLE games ADD COLUMN chairman_threshold INTEGER DEFAULT 100000;
+ALTER TABLE games ADD COLUMN deck_multiplier INTEGER DEFAULT 1;
+
+-- Update user preferences
+ALTER TABLE users ADD COLUMN preferred_variant VARCHAR(20) DEFAULT 'standard';
+
+-- Backfill existing games as 'standard' variant
+UPDATE games SET game_variant = 'standard' WHERE game_variant IS NULL;
+```
 
 ---
 
 ## Deployment Checklist
 
-### Pre-Launch
-- [ ] All three modes fully functional
+### Pre-Launch (Both Variants)
+- [ ] Both variants fully functional
+- [ ] Variant selection working in lobby
+- [ ] Ownership calculations correct for both variants
 - [ ] Mobile responsive
-- [ ] Tutorial system complete
+- [ ] Tutorial system covers both variants
 - [ ] Achievement system working
-- [ ] Leaderboards functional
-- [ ] Performance tested
+- [ ] Leaderboards separate by variant
+- [ ] Performance tested (6 and 12 players)
 - [ ] Security audit
-- [ ] Beta testing completed
-
-### Launch Day
-- [ ] Monitoring in place
-- [ ] Error tracking (Sentry)
-- [ ] Analytics (Google Analytics / Mixpanel)
-- [ ] Database backups automated
-- [ ] Customer support ready
+- [ ] Beta testing completed for both variants
 
 ---
 
-*Technical Specifications for Stock Market Tycoon. This is a living document and will be updated as development progresses.*
+*Technical Specifications for Stock Market Tycoon with Standard and Extended variants. This is a living document and will be updated as development progresses.*
