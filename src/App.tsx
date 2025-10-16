@@ -8,6 +8,7 @@ import GameLobby from './pages/GameLobby'
 import GameWaitingRoom from './pages/GameWaitingRoom'
 import DebugAuth from './pages/DebugAuth'
 import ProfileSetup from './pages/ProfileSetup'
+import TestGameBoard from './pages/TestGameBoard'
 
 function App() {
   return (
@@ -62,6 +63,10 @@ function App() {
                 <DebugAuth />
               </ProtectedRoute>
             }
+          />
+          <Route
+            path="/test-game-board"
+            element={<TestGameBoard />}
           />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

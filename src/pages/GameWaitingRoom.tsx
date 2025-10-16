@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
+import { initializeGameState } from '../lib/gameInitialization';
 
 interface Player {
   player_id: string;
@@ -33,6 +34,7 @@ const GameWaitingRoom: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isHost, setIsHost] = useState(false);
   const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null);
+  const [isStarting, setIsStarting] = useState(false);
 
   useEffect(() => {
     if (!gameId) {
@@ -53,7 +55,8 @@ const GameWaitingRoom: React.FC = () => {
           table: 'game_players',
           filter: `game_id=eq.${gameId}`
         },
-        () => {
+        (payload) => {
+          console.log('[Realtime] game_players change detected:', payload.eventType);
           fetchGameData();
         }
       )
@@ -66,13 +69,17 @@ const GameWaitingRoom: React.FC = () => {
           filter: `game_id=eq.${gameId}`
         },
         (payload) => {
+          console.log('[Realtime] games change detected:', payload.new.status);
           // If game status changed to in_progress, navigate to game
           if (payload.new.status === 'in_progress') {
+            console.log('[Realtime] Navigating to game board...');
             navigate(`/game/${gameId}`);
           }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('[Realtime] Subscription status:', status);
+      });
 
     return () => {
       supabase.removeChannel(channel);
@@ -144,43 +151,62 @@ const GameWaitingRoom: React.FC = () => {
     if (!currentPlayer || !gameId) return;
 
     try {
+      const newReadyState = !currentPlayer.is_ready;
+      console.log('[handleToggleReady] Toggling ready state to:', newReadyState);
+
       const { error } = await supabase
         .from('game_players')
-        .update({ is_ready: !currentPlayer.is_ready })
+        .update({ is_ready: newReadyState })
         .eq('player_id', currentPlayer.player_id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('[handleToggleReady] Error:', error);
+        throw error;
+      }
+
+      console.log('[handleToggleReady] ✅ Ready state updated successfully');
+
+      // Immediately update local state for instant UI feedback
+      setCurrentPlayer({ ...currentPlayer, is_ready: newReadyState });
+      setPlayers(players.map(p =>
+        p.player_id === currentPlayer.player_id
+          ? { ...p, is_ready: newReadyState }
+          : p
+      ));
     } catch (err: any) {
-      console.error('Error toggling ready:', err);
+      console.error('[handleToggleReady] Failed to toggle ready:', err);
+      alert('Failed to update ready status: ' + err.message);
     }
   };
 
   const handleStartGame = async () => {
-    if (!isHost || !gameId) return;
+    if (!isHost || !gameId) {
+      console.log('[handleStartGame] Not host or no gameId');
+      return;
+    }
 
     // Check if at least 2 players are ready
     const readyPlayers = players.filter((p) => p.is_ready);
+    console.log('[handleStartGame] Ready players:', readyPlayers.length);
+
     if (readyPlayers.length < 2) {
       alert('At least 2 players must be ready to start the game');
       return;
     }
 
     try {
-      const { error } = await supabase
-        .from('games')
-        .update({
-          status: 'in_progress',
-          current_round: 1,
-          current_transaction: 1
-        })
-        .eq('game_id', gameId);
+      console.log('[handleStartGame] Starting game...');
+      setIsStarting(true);
 
-      if (error) throw error;
+      // Initialize game state with correct starting prices and player portfolios
+      await initializeGameState(gameId);
 
+      console.log('[handleStartGame] Game started! Waiting for redirect...');
       // The realtime subscription will navigate to the game
     } catch (err: any) {
-      console.error('Error starting game:', err);
+      console.error('[handleStartGame] Error starting game:', err);
       alert('Failed to start game: ' + err.message);
+      setIsStarting(false);
     }
   };
 
@@ -421,14 +447,14 @@ const GameWaitingRoom: React.FC = () => {
           {isHost && (
             <button
               onClick={handleStartGame}
-              disabled={!canStartGame}
+              disabled={!canStartGame || isStarting}
               className={`flex-1 py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 ${
-                canStartGame
+                canStartGame && !isStarting
                   ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
                   : 'bg-slate-700 opacity-50 cursor-not-allowed'
               }`}
             >
-              Start Game
+              {isStarting ? 'Starting Game...' : 'Start Game'}
             </button>
           )}
 
