@@ -7,6 +7,7 @@ import { supabase } from '../supabase';
 import { generateDeck, shuffleDeck, drawCards, type Card } from './deck';
 import { executeBuyTransaction, executeSellTransaction } from './transactionService';
 import { calculateNetWorth } from './calculator';
+import { validatePlayerTurn } from './turnManager';
 import type { GameVariant, GameMode } from '../../types';
 
 // Stock symbols in the game
@@ -181,6 +182,12 @@ export async function executeTransaction(
   action: TransactionAction
 ): Promise<GameStateUpdate> {
   try {
+    // IMPORTANT: Validate that it's this player's turn
+    const turnValidation = await validatePlayerTurn(gameId, playerId);
+    if (!turnValidation.valid) {
+      return { success: false, error: turnValidation.reason || 'It is not your turn' };
+    }
+
     // Fetch current game state
     const { data: game, error: gameError } = await supabase
       .from('games')

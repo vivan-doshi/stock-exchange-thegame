@@ -1,6 +1,12 @@
 import React from 'react';
 import StockCard from './StockCard';
 
+interface PlayerHolding {
+  username: string;
+  shares: number;
+  isCurrentUser: boolean;
+}
+
 interface Stock {
   company: string;
   sector: string;
@@ -11,6 +17,7 @@ interface Stock {
   yourShares: number;
   ownershipLevel: 'Director' | 'Chairman' | null;
   color: string;
+  playerHoldings: PlayerHolding[];
 }
 
 interface StockGridProps {
@@ -32,6 +39,7 @@ const StockGrid: React.FC<StockGridProps> = ({ stocks }) => {
           yourShares={stock.yourShares}
           ownershipLevel={stock.ownershipLevel}
           color={stock.color}
+          playerHoldings={stock.playerHoldings}
         />
       ))}
     </div>

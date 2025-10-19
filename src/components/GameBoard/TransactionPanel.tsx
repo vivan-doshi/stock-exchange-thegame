@@ -7,6 +7,8 @@ interface TransactionPanelProps {
   onBuy?: () => void;
   onSell?: () => void;
   onPass?: () => void;
+  isYourTurn?: boolean;
+  currentPlayerName?: string;
 }
 
 const TransactionPanel: React.FC<TransactionPanelProps> = ({
@@ -15,14 +17,49 @@ const TransactionPanel: React.FC<TransactionPanelProps> = ({
   canAct,
   onBuy,
   onSell,
-  onPass
+  onPass,
+  isYourTurn = true,
+  currentPlayerName = ''
 }) => {
   return (
     <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-4">
+      {/* Turn Indicator */}
+      <div className={`mb-4 p-3 rounded-lg ${
+        isYourTurn
+          ? 'bg-green-500/20 border border-green-500/50'
+          : 'bg-orange-500/20 border border-orange-500/50'
+      }`}>
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-xs font-semibold text-slate-300">CURRENT TURN</div>
+            <div className="text-sm font-bold text-white">{currentPlayerName}</div>
+          </div>
+          {isYourTurn ? (
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="text-xs font-bold text-green-400">YOUR TURN</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+              <span className="text-xs font-medium text-orange-400">WAITING</span>
+            </div>
+          )}
+        </div>
+      </div>
+
       <h2 className="text-xl font-bold mb-4 text-slate-200">Actions</h2>
 
       {/* Main Actions */}
       <div className="space-y-3 mb-6">
+        {!isYourTurn && (
+          <div className="mb-4 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+            <p className="text-xs text-yellow-400 text-center">
+              ⏳ Waiting for {currentPlayerName}'s turn to complete
+            </p>
+          </div>
+        )}
+
         <button
           onClick={onBuy}
           disabled={!canAct}

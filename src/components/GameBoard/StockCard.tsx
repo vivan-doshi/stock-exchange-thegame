@@ -1,5 +1,11 @@
 import React from 'react';
 
+interface PlayerHolding {
+  username: string;
+  shares: number;
+  isCurrentUser: boolean;
+}
+
 interface StockCardProps {
   company: string;
   sector: string;
@@ -10,6 +16,7 @@ interface StockCardProps {
   yourShares: number;
   ownershipLevel: 'Director' | 'Chairman' | null;
   color: string;
+  playerHoldings: PlayerHolding[];
 }
 
 const StockCard: React.FC<StockCardProps> = ({
@@ -21,8 +28,14 @@ const StockCard: React.FC<StockCardProps> = ({
   availableShares,
   yourShares,
   ownershipLevel,
-  color
+  color,
+  playerHoldings
 }) => {
+  // Debug logging for Atlas Bank
+  if (company === 'Atlas Bank') {
+    console.log('[StockCard] Atlas Bank - playerHoldings received:', playerHoldings);
+  }
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -111,10 +124,29 @@ const StockCard: React.FC<StockCardProps> = ({
           <span>Available:</span>
           <span className="font-semibold">{availableShares.toLocaleString()}</span>
         </div>
-        {yourShares > 0 && (
-          <div className="flex justify-between text-slate-300">
-            <span>Your shares:</span>
-            <span className="font-bold text-white">{yourShares.toLocaleString()}</span>
+
+        {/* Player Holdings */}
+        {playerHoldings.length > 0 && (
+          <div className="mt-3 pt-3 border-t border-slate-700/50">
+            <div className="text-xs text-slate-400 mb-2 font-semibold">SHAREHOLDERS</div>
+            <div className="space-y-1.5">
+              {playerHoldings.map((holding, idx) => (
+                <div
+                  key={idx}
+                  className={`flex justify-between items-center ${
+                    holding.isCurrentUser ? 'text-white font-bold' : 'text-slate-300'
+                  }`}
+                >
+                  <span className="text-xs">
+                    {holding.isCurrentUser ? '👤 ' : ''}
+                    {holding.username}
+                  </span>
+                  <span className={`text-xs font-semibold ${holding.isCurrentUser ? 'text-blue-400' : ''}`}>
+                    {holding.shares.toLocaleString()}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

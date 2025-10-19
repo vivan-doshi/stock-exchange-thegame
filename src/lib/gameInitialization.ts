@@ -76,6 +76,8 @@ export async function initializeGameState(gameId: string) {
         started_at: new Date().toISOString(),
         current_round: 1,
         current_transaction: 1,
+        dealer_position: 1,
+        current_player_position: 1,  // Start with player 1
         stock_prices: STARTING_PRICES,
         share_supply: shareSupply
       })
