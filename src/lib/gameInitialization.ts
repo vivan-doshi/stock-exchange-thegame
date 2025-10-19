@@ -67,6 +67,20 @@ export async function initializeGameState(gameId: string) {
       ? SHARE_SUPPLY.extended
       : SHARE_SUPPLY.standard;
 
+    // Get player count to calculate first player position
+    console.log('[initializeGameState] Step 1.5: Getting player count...');
+    const { data: playersCount } = await supabase
+      .from('game_players')
+      .select('player_id', { count: 'exact' })
+      .eq('game_id', gameId);
+
+    const totalPlayers = playersCount?.length || 2;
+    const dealerPosition = 1;
+    // First player to act is the one AFTER the dealer
+    const firstPlayerPosition = (dealerPosition % totalPlayers) + 1;
+
+    console.log('[initializeGameState] Dealer at position', dealerPosition, '- First player to act:', firstPlayerPosition);
+
     // Update game with starting prices and share supply
     console.log('[initializeGameState] Step 2: Updating game state to in_progress...');
     const { error: updateError } = await supabase
@@ -76,8 +90,8 @@ export async function initializeGameState(gameId: string) {
         started_at: new Date().toISOString(),
         current_round: 1,
         current_transaction: 1,
-        dealer_position: 1,
-        current_player_position: 1,  // Start with player 1
+        dealer_position: dealerPosition,
+        current_player_position: firstPlayerPosition,  // Player AFTER dealer goes first
         stock_prices: STARTING_PRICES,
         share_supply: shareSupply
       })

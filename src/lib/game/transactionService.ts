@@ -463,10 +463,21 @@ export async function advanceTransaction(gameId: string): Promise<boolean> {
     const turnAdvanced = await advanceToNextPlayer(gameId);
     console.log('[advanceTransaction] Turn advanced:', turnAdvanced);
 
+    if (!turnAdvanced) {
+      console.error('[advanceTransaction] CRITICAL: advanceToNextPlayer failed!');
+      return false;
+    }
+
+    // IMPORTANT: Wait for database to commit the update
+    // Supabase may have a slight delay before the update is visible
+    console.log('[advanceTransaction] Waiting for database commit...');
+    await new Promise(resolve => setTimeout(resolve, 100));
+
     // IMPORTANT: Refetch game state to get the UPDATED current_player_position
+    console.log('[advanceTransaction] Refetching game state to verify turn advancement...');
     const { data: updatedGame, error: refetchError } = await supabase
       .from('games')
-      .select('current_player_position')
+      .select('current_player_position, dealer_position')
       .eq('game_id', gameId)
       .single();
 
@@ -476,19 +487,29 @@ export async function advanceTransaction(gameId: string): Promise<boolean> {
     }
 
     const nextPlayerPosition = updatedGame.current_player_position || 1;
+    const currentDealerPos = updatedGame.dealer_position || 1;
     console.log('[advanceTransaction] After turn advance - New player position:', nextPlayerPosition);
+    console.log('[advanceTransaction] Dealer position:', currentDealerPos);
 
-    // Check if we've cycled back to player 1 (all players completed this transaction)
-    if (nextPlayerPosition === 1) {
+    // Check if we've cycled back to the first player of this transaction
+    // First player is always the one AFTER the dealer
+    const firstPlayerOfTransaction = (currentDealerPos % playerCount) + 1;
+    console.log('[advanceTransaction] First player of transaction:', firstPlayerOfTransaction);
+
+    if (nextPlayerPosition === firstPlayerOfTransaction) {
       console.log('[advanceTransaction] All players completed transaction', currentTransaction, '- advancing to next transaction/round');
 
       // All players have completed this transaction, advance to next transaction or round
       if (currentTransaction < 3) {
         // Advance to next transaction
+        // Reset current_player_position to first player (person after dealer)
+        console.log('[advanceTransaction] Resetting turn to first player:', firstPlayerOfTransaction);
+
         const { error: updateError } = await supabase
           .from('games')
           .update({
-            current_transaction: currentTransaction + 1
+            current_transaction: currentTransaction + 1,
+            current_player_position: firstPlayerOfTransaction  // Reset to first player of new transaction
           })
           .eq('game_id', gameId);
 
@@ -497,7 +518,7 @@ export async function advanceTransaction(gameId: string): Promise<boolean> {
           return false;
         }
 
-        console.log('[advanceTransaction] Advanced to transaction', currentTransaction + 1);
+        console.log('[advanceTransaction] Advanced to transaction', currentTransaction + 1, '- Turn reset to player', firstPlayerOfTransaction);
         return true;
       } else {
         // All 3 transactions completed, advance to next round
@@ -511,8 +532,11 @@ export async function advanceTransaction(gameId: string): Promise<boolean> {
 
           const currentDealerPosition = gameWithDealer?.dealer_position || 1;
           const nextDealerPosition = (currentDealerPosition % playerCount) + 1;
+          // First player of new round is the one AFTER the new dealer
+          const firstPlayerOfRound = (nextDealerPosition % playerCount) + 1;
 
           console.log('[advanceTransaction] Round complete! Rotating dealer:', currentDealerPosition, '→', nextDealerPosition);
+          console.log('[advanceTransaction] First player of new round:', firstPlayerOfRound);
 
           const { error: updateError } = await supabase
             .from('games')
@@ -520,7 +544,7 @@ export async function advanceTransaction(gameId: string): Promise<boolean> {
               current_round: currentRound + 1,
               current_transaction: 1,
               dealer_position: nextDealerPosition,
-              current_player_position: 1  // Reset to player 1 at start of new round
+              current_player_position: firstPlayerOfRound  // Player AFTER dealer starts the round
             })
             .eq('game_id', gameId);
 

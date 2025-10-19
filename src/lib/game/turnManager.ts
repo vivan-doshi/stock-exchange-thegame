@@ -19,6 +19,8 @@ export interface TurnInfo {
  */
 export async function getCurrentTurnInfo(gameId: string, userId: string): Promise<TurnInfo | null> {
   try {
+    console.log('[getCurrentTurnInfo] Called for gameId:', gameId, 'userId:', userId.substring(0, 8) + '...');
+
     // Get game data - use current_player_position (not dealer_position)
     const { data: game, error: gameError } = await supabase
       .from('games')
@@ -27,9 +29,11 @@ export async function getCurrentTurnInfo(gameId: string, userId: string): Promis
       .single();
 
     if (gameError || !game) {
-      console.error('Error fetching game:', gameError);
+      console.error('[getCurrentTurnInfo] Error fetching game:', gameError);
       return null;
     }
+
+    console.log('[getCurrentTurnInfo] Game current_player_position from DB:', game.current_player_position);
 
     // Get all players in order with their profile data
     const { data: players, error: playersError } = await supabase
@@ -39,9 +43,11 @@ export async function getCurrentTurnInfo(gameId: string, userId: string): Promis
       .order('player_position', { ascending: true });
 
     if (playersError || !players || players.length === 0) {
-      console.error('Error fetching players:', playersError);
+      console.error('[getCurrentTurnInfo] Error fetching players:', playersError);
       return null;
     }
+
+    console.log('[getCurrentTurnInfo] Players:', players.map(p => `Pos ${p.player_position}: ${p.user_id.substring(0, 8)}...`));
 
     // Get profile data for all players
     const playerIds = players.map(p => p.user_id);
@@ -57,21 +63,25 @@ export async function getCurrentTurnInfo(gameId: string, userId: string): Promis
     const currentPlayer = players.find(p => p.player_position === currentPlayerPosition);
 
     if (!currentPlayer) {
-      console.error('Could not find current player. Current player position:', currentPlayerPosition, 'Players:', players);
+      console.error('[getCurrentTurnInfo] Could not find current player. Current player position:', currentPlayerPosition, 'Players:', players);
       return null;
     }
+
+    console.log('[getCurrentTurnInfo] Current player found:', currentPlayer.user_id.substring(0, 8) + '...', 'at position', currentPlayerPosition);
 
     // Calculate next player position
     const nextPosition = (currentPlayerPosition % players.length) + 1;
     const nextPlayer = players.find(p => p.player_position === nextPosition);
 
     if (!nextPlayer) {
-      console.error('Could not find next player');
+      console.error('[getCurrentTurnInfo] Could not find next player');
       return null;
     }
 
     // Check if it's the current user's turn
     const isYourTurn = currentPlayer.user_id === userId;
+
+    console.log('[getCurrentTurnInfo] Checking turn - Current player:', currentPlayer.user_id.substring(0, 8) + '...', 'Requesting user:', userId.substring(0, 8) + '...', 'Is your turn:', isYourTurn);
 
     const currentProfile = profileMap.get(currentPlayer.user_id);
 
@@ -84,7 +94,7 @@ export async function getCurrentTurnInfo(gameId: string, userId: string): Promis
       isYourTurn
     };
   } catch (error) {
-    console.error('Error getting turn info:', error);
+    console.error('[getCurrentTurnInfo] Error:', error);
     return null;
   }
 }
@@ -136,10 +146,11 @@ export async function validatePlayerTurn(gameId: string, playerId: string): Prom
 export async function advanceToNextPlayer(gameId: string): Promise<boolean> {
   try {
     console.log('[advanceToNextPlayer] Starting for game:', gameId);
+    console.log('[advanceToNextPlayer] Game ID type:', typeof gameId, 'Length:', gameId.length);
 
     const { data: game, error: gameError } = await supabase
       .from('games')
-      .select('current_player_position, dealer_position')
+      .select('current_player_position, dealer_position, game_id')
       .eq('game_id', gameId)
       .single();
 
@@ -174,13 +185,37 @@ export async function advanceToNextPlayer(gameId: string): Promise<boolean> {
     console.log('[advanceToNextPlayer] Current player position:', currentPlayerPosition, '→ Next position:', nextPlayerPosition, 'Total players:', playerCount);
 
     // Update current_player_position (NOT dealer_position)
-    const { error: updateError } = await supabase
+    console.log('[advanceToNextPlayer] Attempting database update: current_player_position =', nextPlayerPosition);
+    console.log('[advanceToNextPlayer] Updating game with ID:', gameId);
+    console.log('[advanceToNextPlayer] Update payload:', { current_player_position: nextPlayerPosition });
+
+    const { data: updateData, error: updateError, count } = await supabase
       .from('games')
       .update({ current_player_position: nextPlayerPosition })
-      .eq('game_id', gameId);
+      .eq('game_id', gameId)
+      .select();
 
     if (updateError) {
       console.error('[advanceToNextPlayer] Error updating player position:', updateError);
+      console.error('[advanceToNextPlayer] Error details:', JSON.stringify(updateError, null, 2));
+      return false;
+    }
+
+    console.log('[advanceToNextPlayer] Database update result:', updateData);
+    console.log('[advanceToNextPlayer] Rows affected:', updateData?.length || 0);
+
+    if (!updateData || updateData.length === 0) {
+      console.error('[advanceToNextPlayer] WARNING: Update matched 0 rows! Game may not exist or RLS policy blocking update');
+      console.error('[advanceToNextPlayer] Tried to update game_id:', gameId);
+
+      // Try to verify the game exists
+      const { data: verifyGame, error: verifyError } = await supabase
+        .from('games')
+        .select('game_id')
+        .eq('game_id', gameId)
+        .single();
+
+      console.log('[advanceToNextPlayer] Verification - Game exists?', !!verifyGame, 'Error:', verifyError);
       return false;
     }
 
