@@ -11,7 +11,9 @@ interface Transaction {
   total_amount: number;
   created_at: string;
   round_number: number;
+
   transaction_number: number;
+  details?: any; // Add details field
 }
 
 interface TransactionHistoryProps {
@@ -37,7 +39,7 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({ gameId, current
       // First, get ALL transactions for this game (not just current round for debugging)
       const { data: txData, error: txError } = await supabase
         .from('transactions')
-        .select('transaction_id, transaction_type, stock_symbol, quantity, price_per_share, total_amount, created_at, round_number, transaction_number, player_id, game_id')
+        .select('transaction_id, transaction_type, stock_symbol, quantity, price_per_share, total_amount, created_at, round_number, transaction_number, player_id, game_id, details') // Added details
         .eq('game_id', gameId)
         .order('created_at', { ascending: false })
         .limit(20);
@@ -98,7 +100,9 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({ gameId, current
           total_amount: t.total_amount,
           created_at: t.created_at,
           round_number: t.round_number,
-          transaction_number: t.transaction_number
+
+          transaction_number: t.transaction_number,
+          details: t.details // Pass details through
         };
       });
 
@@ -245,14 +249,21 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({ gameId, current
                       )}
                     </div>
                   )}
+
+
+
+                  {tx.transaction_type === 'card_effect' && tx.details && (
+                    <div className="ml-7 text-sm text-slate-300">
+                      {getCardHistoryDescription(tx.details.card_type, tx.total_amount)}
+                    </div>
+                  )}
                 </div>
 
                 <div className="text-right">
-                  <div className={`text-sm font-semibold ${
-                    tx.transaction_type === 'buy_shares' ? 'text-red-400' :
+                  <div className={`text-sm font-semibold ${tx.transaction_type === 'buy_shares' ? 'text-red-400' :
                     tx.transaction_type === 'sell_shares' ? 'text-green-400' :
-                    'text-slate-400'
-                  }`}>
+                      'text-slate-400'
+                    }`}>
                     {tx.transaction_type === 'buy_shares' && '-'}
                     {tx.transaction_type === 'sell_shares' && '+'}
                     {tx.total_amount !== 0 && formatCurrency(Math.abs(tx.total_amount))}
@@ -288,3 +299,18 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({ gameId, current
 };
 
 export default TransactionHistory;
+
+function getCardHistoryDescription(type: string, amount: number): string {
+  const formattedAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(Math.abs(amount));
+
+  switch (type) {
+    case 'rights-issued': return `Exercised rights issued.`;
+    case 'debenture': return `Cashed in debentures for ${formattedAmount}.`;
+    case 'currency-plus': return `Currency appreciated! Gained ${formattedAmount}.`;
+    case 'currency-minus': return `Currency deprecated! Lost ${formattedAmount}.`;
+    case 'loan-stocks-matured': return `Loans matured! Received ${formattedAmount}.`;
+    case 'profit-warning': return `Issued a profit warning.`;
+    case 'takeover-bid': return `Initiated a takeover bid.`;
+    default: return `Played ${type.replace(/-/g, ' ')}.`;
+  }
+}

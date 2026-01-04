@@ -535,25 +535,20 @@ export async function advanceTransaction(gameId: string): Promise<boolean> {
           // First player of new round is the one AFTER the new dealer
           const firstPlayerOfRound = (nextDealerPosition % playerCount) + 1;
 
-          console.log('[advanceTransaction] Round complete! Rotating dealer:', currentDealerPosition, '→', nextDealerPosition);
-          console.log('[advanceTransaction] First player of new round:', firstPlayerOfRound);
+          console.log('[advanceTransaction] Round trading complete. Phase switched to end_of_round');
 
           const { error: updateError } = await supabase
             .from('games')
             .update({
-              current_round: currentRound + 1,
-              current_transaction: 1,
-              dealer_position: nextDealerPosition,
-              current_player_position: firstPlayerOfRound  // Player AFTER dealer starts the round
+              phase: 'end_of_round'
             })
             .eq('game_id', gameId);
 
           if (updateError) {
-            console.error('[advanceTransaction] Failed to advance round:', updateError);
+            console.error('[advanceTransaction] Failed to switch phase:', updateError);
             return false;
           }
 
-          console.log('[advanceTransaction] Advanced to round', currentRound + 1, 'with dealer at position', nextDealerPosition);
           return true;
         } else {
           // Game over
@@ -570,8 +565,7 @@ export async function advanceTransaction(gameId: string): Promise<boolean> {
         }
       }
     } else {
-      console.log('[advanceTransaction] Same transaction continues - next player is', nextDealerPosition);
-      // Still cycling through players for current transaction, no need to update transaction number
+      console.log('[advanceTransaction] Same transaction continues - next player is', nextPlayerPosition);
       return true;
     }
   } catch (error: any) {

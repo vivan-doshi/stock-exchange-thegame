@@ -1,4 +1,6 @@
 import { supabase } from './supabase';
+import { generateDeck, distributeCards } from './game/deck';
+import { GameVariant } from '../types';
 
 // Company starting prices (from company_profiles.md)
 export const STARTING_PRICES = {
@@ -105,16 +107,35 @@ export async function initializeGameState(gameId: string) {
     console.log('[initializeGameState] ✅ Game status updated to in_progress');
 
     // Initialize player portfolios with starting capital and empty holdings
-    console.log('[initializeGameState] Step 3: Fetching players...');
+    // Initialize player portfolios with starting capital and empty holdings
+    // AND distribute cards
+    console.log('[initializeGameState] Step 3: Fetching players and dealing cards...');
     const { data: players, error: playersError } = await supabase
       .from('game_players')
-      .select('player_id, user_id')
-      .eq('game_id', gameId);
+      .select('player_id, user_id, player_position') // added player_position
+      .eq('game_id', gameId)
+      .order('player_position'); // Ensure consistent order for dealing
 
     if (playersError) {
       console.error('[initializeGameState] ❌ Error fetching players:', playersError);
       throw playersError;
     }
+
+    if (!players || players.length === 0) {
+      throw new Error('No players found in game');
+    }
+
+    // Generate Deck and Distribute
+    console.log('[initializeGameState] 🃏 Generating deck for variant:', game.game_variant);
+    const deck = generateDeck(game.game_variant as GameVariant);
+
+    // Deal 10 cards per player as per rules
+    const hands = distributeCards(deck, players.length, 10);
+
+    // Sort players by position to align with hands (though we already ordered by position)
+    // distribution function returns hands in index order 0..N
+    // We assume players[0] gets hands[0], etc.
+
 
     // Update each player with starting cash and empty stock holdings
     const emptyHoldings = {
@@ -127,13 +148,16 @@ export async function initializeGameState(gameId: string) {
     };
 
     console.log('[initializeGameState] Step 4: Initializing', players?.length, 'player portfolios...');
-    for (const player of players || []) {
+    // Use regular for loop to access index
+    for (let index = 0; index < players.length; index++) {
+      const player = players[index];
       console.log('[initializeGameState] 👤 Updating player:', player.player_id, 'user:', player.user_id);
       const { error: playerUpdateError } = await supabase
         .from('game_players')
         .update({
           cash_balance: game.starting_capital,
-          stock_holdings: emptyHoldings
+          stock_holdings: emptyHoldings,
+          current_cards: hands[index] // Deal cards to player
         })
         .eq('player_id', player.player_id);
 

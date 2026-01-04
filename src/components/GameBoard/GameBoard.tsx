@@ -13,7 +13,13 @@ import BottomSection from './BottomSection';
 import BuyModal from './BuyModal';
 import SellModal from './SellModal';
 import TransactionHistory from './TransactionHistory';
-
+import { PlayerHand } from '../game/PlayerHand';
+import { playCard, canBuyStockWithCards } from '../../lib/game/actions';
+import { EndOfRoundModal } from './EndOfRoundModal';
+import { CardPlayModal } from './CardPlayModal'; // New Import
+import { finalizeRound } from '../../lib/game/endOfRoundService';
+import { NotificationModal } from '../common/NotificationModal';
+import { Card } from '../../types';
 interface GameBoardProps {
   gameId?: string;
 }
@@ -46,6 +52,11 @@ const GameBoard: React.FC<GameBoardProps> = () => {
   // Modal states
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
   const [isSellModalOpen, setIsSellModalOpen] = useState(false);
+  const [isEndOfRoundModalOpen, setIsEndOfRoundModalOpen] = useState(false);
+  const [cardToPlay, setCardToPlay] = useState<Card | null>(null); // New State
+  const [notification, setNotification] = useState<{ isOpen: boolean, title: string, message: string, type: 'success' | 'error' | 'info' }>({
+    isOpen: false, title: '', message: '', type: 'info'
+  });
 
   // Transaction state
   const [isProcessing, setIsProcessing] = useState(false);
@@ -75,7 +86,15 @@ const GameBoard: React.FC<GameBoardProps> = () => {
           console.log('[GameBoard] Game state updated:', payload);
           console.log('[GameBoard] New current_player_position:', payload.new?.current_player_position);
           console.log('[GameBoard] New dealer_position:', payload.new?.dealer_position);
+          console.log('[GameBoard] New dealer_position:', payload.new?.dealer_position);
           setGameData(payload.new);
+
+          // Check phase change
+          if (payload.new?.phase === 'end_of_round') {
+            setIsEndOfRoundModalOpen(true);
+          } else if (payload.new?.phase === 'trading') {
+            setIsEndOfRoundModalOpen(false);
+          }
 
           // ONLY refresh turn info if we're not currently processing a transaction
           // This prevents race conditions where player updates overwrite our turn state
@@ -301,7 +320,35 @@ const GameBoard: React.FC<GameBoardProps> = () => {
     // Extra safety check - verify it's still our turn
     if (!isYourTurn) {
       console.log('[handleBuyConfirm] Blocked - not your turn anymore');
-      alert('It is not your turn');
+      setNotification({ isOpen: true, title: 'Not Your Turn', message: 'You can only buy stocks during your turn.', type: 'info' });
+      setIsBuyModalOpen(false);
+      return;
+    }
+
+    // Validate if the player is allowed to buy this stock based on cards
+    // Validate if the player is allowed to buy this stock based on cards
+    // Check if player is the first buyer.
+    // Use gameData.share_supply to check if ANY shares have been bought (available < max).
+    // Max shares per stock: 200,000 (Standard) or 300,000 (Extended)
+    const maxShares = gameData.game_variant === 'extended' ? 300000 : 200000;
+    const availableShares = gameData.share_supply?.[stockSymbol] ?? maxShares;
+
+    // If available shares < maxShares, someone has bought it.
+    // However, if *I* am the one who bought it, I'm not the "First Buyer" anymore in the sense of the rule exception?
+    // Actually, the rule is "First Buyer of that stock in that entire market year".
+    // But simplest check: "Is there anyone else holding this stock?".
+    // If available == max, THEN no one holds it.
+    const isFirstBuyer = availableShares === maxShares;
+
+    const canBuy = canBuyStockWithCards(playerData.current_cards || [], stockSymbol, isFirstBuyer);
+
+    if (!canBuy) {
+      setNotification({
+        isOpen: true,
+        title: 'Cannot Buy',
+        message: 'You have a net negative value on Price Cards for this company, or no price cards at all.',
+        type: 'error'
+      });
       setIsBuyModalOpen(false);
       return;
     }
@@ -341,11 +388,11 @@ const GameBoard: React.FC<GameBoardProps> = () => {
 
         // Data will also update via real-time subscription
       } else {
-        alert(`Transaction failed: ${result.error}`);
+        setNotification({ isOpen: true, title: 'Transaction Failed', message: result.error || 'Unknown error', type: 'error' });
       }
     } catch (error: any) {
       console.error('Error executing buy:', error);
-      alert(`Error: ${error.message}`);
+      setNotification({ isOpen: true, title: 'Error', message: error.message, type: 'error' });
     } finally {
       setIsProcessing(false);
     }
@@ -357,7 +404,7 @@ const GameBoard: React.FC<GameBoardProps> = () => {
     // Extra safety check - verify it's still our turn
     if (!isYourTurn) {
       console.log('[handleSellConfirm] Blocked - not your turn anymore');
-      alert('It is not your turn');
+      setNotification({ isOpen: true, title: 'Not Your Turn', message: 'You can only sell stocks during your turn.', type: 'info' });
       setIsSellModalOpen(false);
       return;
     }
@@ -397,11 +444,11 @@ const GameBoard: React.FC<GameBoardProps> = () => {
 
         // Data will also update via real-time subscription
       } else {
-        alert(`Transaction failed: ${result.error}`);
+        setNotification({ isOpen: true, title: 'Transaction Failed', message: result.error || 'Unknown error', type: 'error' });
       }
     } catch (error: any) {
       console.error('Error executing sell:', error);
-      alert(`Error: ${error.message}`);
+      setNotification({ isOpen: true, title: 'Error', message: error.message, type: 'error' });
     } finally {
       setIsProcessing(false);
     }
@@ -412,9 +459,11 @@ const GameBoard: React.FC<GameBoardProps> = () => {
 
     // Extra safety check - verify it's still our turn
     if (!isYourTurn) {
-      console.log('[handlePass] Blocked - not your turn anymore');
-      alert('It is not your turn');
-      return;
+      if (!isYourTurn) {
+        console.log('[handlePass] Blocked - not your turn anymore');
+        setNotification({ isOpen: true, title: 'Not Your Turn', message: 'You can only pass during your turn.', type: 'info' });
+        return;
+      }
     }
 
     setIsProcessing(true);
@@ -444,11 +493,11 @@ const GameBoard: React.FC<GameBoardProps> = () => {
 
         // Data will also update via real-time subscription
       } else {
-        alert(`Transaction failed: ${result.error}`);
+        setNotification({ isOpen: true, title: 'Transaction Failed', message: result.error || 'Unknown error', type: 'error' });
       }
     } catch (error: any) {
       console.error('Error executing pass:', error);
-      alert(`Error: ${error.message}`);
+      setNotification({ isOpen: true, title: 'Error', message: error.message, type: 'error' });
     } finally {
       setIsProcessing(false);
     }
@@ -616,7 +665,67 @@ const GameBoard: React.FC<GameBoardProps> = () => {
         recentTransactions={recentTransactionsForBottom}
       />
 
+      {/* Player Hand - Fixed at bottom */}
+      <div className="fixed bottom-0 left-0 right-0 z-50">
+        <PlayerHand
+          cards={playerData?.current_cards || []}
+          onCardClick={(card) => {
+            console.log('Card clicked:', card);
+            if (card.type === 'price') return;
+            if (!isYourTurn) {
+              setNotification({ isOpen: true, title: 'Not your turn', message: 'You can only play cards during your turn.', type: 'info' });
+              return;
+            }
+            // Open confirmation modal
+            setCardToPlay(card);
+          }}
+          disabled={isProcessing}
+        />
+      </div>
+
       {/* Modals */}
+      <CardPlayModal
+        isOpen={!!cardToPlay}
+        onClose={() => setCardToPlay(null)}
+        card={cardToPlay}
+        isProcessing={isProcessing}
+        onConfirm={async () => {
+          if (!cardToPlay) return;
+          setIsProcessing(true);
+          try {
+            const result = await playCard(gameId!, playerData.player_id, cardToPlay);
+            // Close modal first
+            setCardToPlay(null);
+
+            if (result.success) {
+              setNotification({
+                isOpen: true,
+                title: 'Card Played!',
+                message: result.message || 'Effect applied successfully.',
+                type: 'success'
+              });
+            } else {
+              setNotification({
+                isOpen: true,
+                title: 'Action Failed',
+                message: result.message || 'Could not play card.',
+                type: 'error'
+              });
+            }
+          } catch (e: any) {
+            setCardToPlay(null);
+            setNotification({
+              isOpen: true,
+              title: 'Error',
+              message: e.message,
+              type: 'error'
+            });
+          } finally {
+            setIsProcessing(false);
+          }
+        }}
+      />
+
       <BuyModal
         isOpen={isBuyModalOpen}
         onClose={() => setIsBuyModalOpen(false)}
@@ -630,6 +739,29 @@ const GameBoard: React.FC<GameBoardProps> = () => {
         onClose={() => setIsSellModalOpen(false)}
         ownedStocks={ownedStocks}
         onConfirm={handleSellConfirm}
+      />
+
+      <EndOfRoundModal
+        isOpen={isEndOfRoundModalOpen}
+        gameId={gameId || ''}
+        currentRound={gameData?.current_round || 1}
+        isHost={true} // TODO: Implement host check using game.created_by or similar
+        onClose={() => setIsEndOfRoundModalOpen(false)}
+        onNextRound={async () => {
+          // We need to implement finalizeRound in endOfRoundService first.
+          // For now, let's call the finalizeRound function we will create.
+          try {
+            await finalizeRound(gameId!);
+          } catch (e) { console.error(e); alert('Error advancing round'); }
+        }}
+      />
+
+      <NotificationModal
+        isOpen={notification.isOpen}
+        onClose={() => setNotification(prev => ({ ...prev, isOpen: false }))}
+        title={notification.title}
+        message={notification.message}
+        type={notification.type}
       />
     </div>
   );

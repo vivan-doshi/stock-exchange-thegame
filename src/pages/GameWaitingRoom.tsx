@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import { initializeGameState } from '../lib/gameInitialization';
+import LeaveGameModal from '../components/Lobby/LeaveGameModal';
 
 interface Player {
   player_id: string;
@@ -35,6 +36,7 @@ const GameWaitingRoom: React.FC = () => {
   const [isHost, setIsHost] = useState(false);
   const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null);
   const [isStarting, setIsStarting] = useState(false);
+  const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
 
   useEffect(() => {
     if (!gameId) {
@@ -210,16 +212,8 @@ const GameWaitingRoom: React.FC = () => {
     }
   };
 
-  const handleLeaveGame = async () => {
+  const confirmLeaveGame = async () => {
     if (!currentPlayer || !gameId) return;
-
-    const confirmLeave = window.confirm(
-      isHost
-        ? 'You are the host. Leaving will delete this game. Are you sure?'
-        : 'Are you sure you want to leave this game?'
-    );
-
-    if (!confirmLeave) return;
 
     try {
       if (isHost) {
@@ -359,11 +353,10 @@ const GameWaitingRoom: React.FC = () => {
             {players.map((player) => (
               <div
                 key={player.player_id}
-                className={`flex items-center justify-between p-4 rounded-lg ${
-                  player.user_id === user?.id
+                className={`flex items-center justify-between p-4 rounded-lg ${player.user_id === user?.id
                     ? 'bg-blue-600/20 border border-blue-500/50'
                     : 'bg-slate-700/50'
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   {/* Avatar */}
@@ -433,11 +426,10 @@ const GameWaitingRoom: React.FC = () => {
           {currentPlayer && (
             <button
               onClick={handleToggleReady}
-              className={`flex-1 py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 ${
-                currentPlayer.is_ready
+              className={`flex-1 py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 ${currentPlayer.is_ready
                   ? 'bg-slate-700 hover:bg-slate-600'
                   : 'bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700'
-              }`}
+                }`}
             >
               {currentPlayer.is_ready ? 'Not Ready' : 'Ready'}
             </button>
@@ -448,11 +440,10 @@ const GameWaitingRoom: React.FC = () => {
             <button
               onClick={handleStartGame}
               disabled={!canStartGame || isStarting}
-              className={`flex-1 py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 ${
-                canStartGame && !isStarting
+              className={`flex-1 py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 ${canStartGame && !isStarting
                   ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
                   : 'bg-slate-700 opacity-50 cursor-not-allowed'
-              }`}
+                }`}
             >
               {isStarting ? 'Starting Game...' : 'Start Game'}
             </button>
@@ -460,12 +451,19 @@ const GameWaitingRoom: React.FC = () => {
 
           {/* Leave Game */}
           <button
-            onClick={handleLeaveGame}
+            onClick={() => setIsLeaveModalOpen(true)}
             className="px-6 py-4 bg-red-600 hover:bg-red-700 rounded-xl font-semibold transition-colors"
           >
             Leave
           </button>
         </div>
+
+        <LeaveGameModal
+          isOpen={isLeaveModalOpen}
+          onClose={() => setIsLeaveModalOpen(false)}
+          onConfirm={confirmLeaveGame}
+          isHost={isHost}
+        />
 
         {/* Start Game Info */}
         {isHost && !canStartGame && (
